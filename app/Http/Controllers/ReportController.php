@@ -21,7 +21,8 @@ class ReportController extends Controller
 
         if ($dateStart && $dateEnd) {
             $data = DB::table('batchproductioncode')
-                ->whereBetween('createdAt', ["{$dateStart} 00:00:00", "{$dateEnd} 23:59:59"])
+                ->whereBetween('starproduction', ["{$dateStart} 00:00:00", "{$dateEnd} 23:59:59"])
+                ->where('status', 'Finish')
                 ->get();
         } else {
             $data = [];
