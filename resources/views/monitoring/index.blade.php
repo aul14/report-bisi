@@ -23,7 +23,6 @@
 
             ws.onopen = function(event) {
                 console.log('Connection Established');
-                console.log(valPlan);
             };
 
             $('#main-svg').html("");
