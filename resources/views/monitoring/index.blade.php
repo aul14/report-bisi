@@ -25,14 +25,14 @@
                 console.log('Connection Established');
             };
 
-            $('#main-svg').html("");
+            // $('#main-svg').html("");
             let svgExample = "{{ asset('assets/images/svg/AllLine.svg') }}";
             scadavisInit({
                 container: 'main-svg',
                 iframeparams: 'frameborder="0" height="1080" width="1920"',
                 svgurl: svgExample
             }).then(sv => {
-                // sv.zoomTo(2.24);
+                sv.zoomTo(2.24);
                 sv.enableTools(true, true);
                 sv.hideWatermark();
 
