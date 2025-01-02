@@ -314,7 +314,7 @@
                 setTimeout(() => {
                     console.log('Attempting to reconnect...');
                     $('#main-svg').html("");
-                    ConnectWsMonitoring(valPlan);
+                    ConnectWsMonitoring();
                 }, 5000);
             }
         }
