@@ -1,15 +1,15 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 @section('content')
     @include('layouts.navbars.auth.topnav', ['title' => 'Monitoring Realtime'])
-    <div class="row mt-1 px-1">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12" id="main-svg"></div>
+    </div>
+    {{-- <div class="row mt-1 px-1">
         <div class="card">
             <div class="card-body px-1">
-                <div class="row">
-                    <div class="col-lg-12 col-sm-12" id="main-svg"></div>
-                </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @section('script')
     <script>
