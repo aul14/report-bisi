@@ -14,7 +14,18 @@
 @section('script')
     <script>
         $(function () {
-            ConnectWsMonitoring();
+            // ConnectWsMonitoring();
+            let svgExample = "{{ asset('assets/images/svg/AllLine.svg') }}";
+            scadavisInit({
+                container: 'main-svg',
+                iframeparams: 'frameborder="0" height="1080" width="1920"',
+                svgurl: svgExample
+            }).then(sv => {
+                sv.zoomTo(2.24);
+                sv.enableTools(true, true);
+                sv.hideWatermark();
+
+            });
         });
         function ConnectWsMonitoring() {
             let ws_url = $("input[name=ws_url]").val();
@@ -25,7 +36,7 @@
                 console.log('Connection Established');
             };
 
-            // $('#main-svg').html("");
+            $('#main-svg').html("");
             let svgExample = "{{ asset('assets/images/svg/AllLine.svg') }}";
             scadavisInit({
                 container: 'main-svg',
@@ -62,7 +73,7 @@
                     sv.storeValue("#L1T1PercentGood", data.LineNumber1.Timbangan1.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L1T1PercentOver", data.LineNumber1.Timbangan1.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L1T1PercentError", data.LineNumber1.Timbangan1.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L1T2Status", data.LineNumber1.Timbangan2.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L1T2Connection", data.LineNumber1.Timbangan2.StatusConnection_number);
                     sv.storeValue("#L1T2Error", data.LineNumber1.Timbangan2.NonRealTime.WeighingMachineStatus.Failure);
@@ -82,7 +93,7 @@
                     sv.storeValue("#L1T2PercentGood", data.LineNumber1.Timbangan2.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L1T2PercentOver", data.LineNumber1.Timbangan2.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L1T2PercentError", data.LineNumber1.Timbangan2.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L1T3Status", data.LineNumber1.Timbangan3.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L1T3Connection", data.LineNumber1.Timbangan3.StatusConnection_number);
                     sv.storeValue("#L1T3Error", data.LineNumber1.Timbangan3.NonRealTime.WeighingMachineStatus.Failure);
@@ -103,7 +114,7 @@
                     sv.storeValue("#L1T3PercentOver", data.LineNumber1.Timbangan3.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L1T3PercentError", data.LineNumber1.Timbangan3.NonRealTime.Weighinganomaliespercentage);
                     // END LINE 1
-
+    
                     // LINE 2
                     sv.storeValue("#L2Status", data.LineNumber2.DataPanel.status);
                     sv.storeValue("#L2Duration", data.LineNumber2.DataPanel.RunnningTime);
@@ -128,7 +139,7 @@
                     sv.storeValue("#L2T1PercentGood", data.LineNumber2.Timbangan1.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L2T1PercentOver", data.LineNumber2.Timbangan1.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L2T1PercentError", data.LineNumber2.Timbangan1.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L2T2Status", data.LineNumber2.Timbangan2.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L2T2Connection", data.LineNumber2.Timbangan2.StatusConnection_number);
                     sv.storeValue("#L2T2Error", data.LineNumber2.Timbangan2.NonRealTime.WeighingMachineStatus.Failure);
@@ -148,7 +159,7 @@
                     sv.storeValue("#L2T2PercentGood", data.LineNumber2.Timbangan2.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L2T2PercentOver", data.LineNumber2.Timbangan2.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L2T2PercentError", data.LineNumber2.Timbangan2.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L2T3Status", data.LineNumber2.Timbangan3.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L2T3Connection", data.LineNumber2.Timbangan3.StatusConnection_number);
                     sv.storeValue("#L2T3Error", data.LineNumber2.Timbangan3.NonRealTime.WeighingMachineStatus.Failure);
@@ -169,7 +180,7 @@
                     sv.storeValue("#L2T3PercentOver", data.LineNumber2.Timbangan3.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L2T3PercentError", data.LineNumber2.Timbangan3.NonRealTime.Weighinganomaliespercentage);
                     // END LINE 2
-
+    
                     // LINE 3
                     sv.storeValue("#L3Status", data.LineNumber3.DataPanel.status);
                     sv.storeValue("#L3Duration", data.LineNumber3.DataPanel.RunnningTime);
@@ -194,7 +205,7 @@
                     sv.storeValue("#L3T1PercentGood", data.LineNumber3.Timbangan1.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L3T1PercentOver", data.LineNumber3.Timbangan1.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L3T1PercentError", data.LineNumber3.Timbangan1.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L3T2Status", data.LineNumber3.Timbangan2.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L3T2Connection", data.LineNumber3.Timbangan2.StatusConnection_number);
                     sv.storeValue("#L3T2Error", data.LineNumber3.Timbangan2.NonRealTime.WeighingMachineStatus.Failure);
@@ -214,7 +225,7 @@
                     sv.storeValue("#L3T2PercentGood", data.LineNumber3.Timbangan2.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L3T2PercentOver", data.LineNumber3.Timbangan2.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L3T2PercentError", data.LineNumber3.Timbangan2.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L3T3Status", data.LineNumber3.Timbangan3.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L3T3Connection", data.LineNumber3.Timbangan3.StatusConnection_number);
                     sv.storeValue("#L3T3Error", data.LineNumber3.Timbangan3.NonRealTime.WeighingMachineStatus.Failure);
@@ -235,7 +246,7 @@
                     sv.storeValue("#L3T3PercentOver", data.LineNumber3.Timbangan3.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L3T3PercentError", data.LineNumber3.Timbangan3.NonRealTime.Weighinganomaliespercentage);
                     // END LINE 3
-
+    
                     // LINE 4
                     sv.storeValue("#L4Status", data.LineNumber4.DataPanel.status);
                     sv.storeValue("#L4Duration", data.LineNumber4.DataPanel.RunnningTime);
@@ -260,7 +271,7 @@
                     sv.storeValue("#L4T1PercentGood", data.LineNumber4.Timbangan1.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L4T1PercentOver", data.LineNumber4.Timbangan1.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L4T1PercentError", data.LineNumber4.Timbangan1.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L4T2Status", data.LineNumber4.Timbangan2.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L4T2Connection", data.LineNumber4.Timbangan2.StatusConnection_number);
                     sv.storeValue("#L4T2Error", data.LineNumber4.Timbangan2.NonRealTime.WeighingMachineStatus.Failure);
@@ -280,7 +291,7 @@
                     sv.storeValue("#L4T2PercentGood", data.LineNumber4.Timbangan2.NonRealTime.Qualifiedpercentage);
                     sv.storeValue("#L4T2PercentOver", data.LineNumber4.Timbangan2.NonRealTime.Overweightpercentage);
                     sv.storeValue("#L4T2PercentError", data.LineNumber4.Timbangan2.NonRealTime.Weighinganomaliespercentage);
-
+    
                     sv.storeValue("#L4T3Status", data.LineNumber4.Timbangan3.NonRealTime.WeighingMachineStatus.StopStart);
                     sv.storeValue("#L4T3Connection", data.LineNumber4.Timbangan3.StatusConnection_number);
                     sv.storeValue("#L4T3Error", data.LineNumber4.Timbangan3.NonRealTime.WeighingMachineStatus.Failure);
