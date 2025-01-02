@@ -1,9 +1,9 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Report Barrier Gate'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Report'])
     <div class="row mt-1 px-1">
         <div class="card">
-            <div class="card-header p-0">
+            <div class="card-body px-1">
                 <form class="form-search">
                     @csrf
                     <div class="row">
@@ -20,45 +20,55 @@
                         <div class="col-md-12 my-2">
                             <a href="{{ route('report.index') }}" class="btn btn-md btn-outline-warning">Refresh</a>
                             <a href="javascript:void(0)" class="btn btn-md btn-outline-primary btn-search">Search</a>
+                            <a href="javascript:void(0)" class="btn btn-md btn-outline-danger btn-pdf"
+                                style="display: none">PDF</a>
+                            <a href="javascript:void(0)" class="btn btn-md btn-outline-success btn-excell"
+                                style="display: none">Excell</a>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="card-body p-1">
-                <div class="row" id="row-content">
-                    <div class="col-lg-12">
-                        <div class="row report-title"></div>
+
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-lg-12 col-sm-12">
-                                <div id="bc-scale" style="height: 370px; width: 100%;"></div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-5">Date From</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-6 akm-date-from"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">Date To</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-6 akm-date-to"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">Total Batch</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-6 akm-tot-batch"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">Total Duration</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-5 akm-tot-dur"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">Total Pcs</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-5 akm-tot-pcs"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">Total Box</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-5 akm-tot-box"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-lg-12 col-sm-12 mb-3">
-                                <div id="pc-allscenario" style="height: 540px; width: 100%;"></div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12">
-                                <div id="pc-scenario" style="height: 450px; width: 100%;"></div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12">
-                                <div id="pc-truck" style="height: 450px; width: 100%;"></div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-12">
-                                <div class="tablelog overflow-auto"></div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-12">
-                                <div class="tabledb overflow-auto"></div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-12">
-                                <div class="tabletrack overflow-auto"></div>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-report" style="overflow: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -92,803 +102,140 @@
                     return
                 }
 
-                dataReport(date_start, date_end);
-            });
-
-            $(document).on("click", ".btn-hide-tracking", function(e) {
-                $('.tabletrack').empty();
-            });
-
-            $(document).on("click", ".btn-hide-db", function(e) {
-                $('.tabledb').empty();
-            });
-
-            $(document).on("click", ".btn-tracking", function(e) {
-                let arrival_date = $(this).data('arrival_date'),
-                    plant = $(this).data('plant'),
-                    sequence = $(this).data('sequence');
-
-                $.ajax({
-                    type: "post",
-                    url: '{{ route('get.detail.tracking') }}',
-                    data: {
-                        plant: plant,
-                        arrival_date: arrival_date,
-                        sequence: sequence,
-                    },
-                    dataType: "json",
-                    success: function(res) {
-                        const tableTrack = $('.tabletrack');
-                        if (res.length > 0) {
-                            const resultTable = $(
-                                `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
-                            );
-
-                            resultTable.append(`
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 2% !important;">No</th>
-                                            <th style="width: 18% !important;">Status</th>
-                                            <th style="width: 80% !important;">Created At</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                            `);
-
-                            const tableBody = resultTable.find('tbody');
-                            $.each(res, function(key, val) {
-                                const options = {
-                                    timeZone: 'Asia/Jakarta',
-                                    hour12: false,
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit'
-                                };
-                                const createdAt = new Date(val['created_at'])
-                                    .toLocaleString('en-US', options);
-
-                                tableBody.append(`
-                                    <tr>
-                                        <td>${key + 1}</td>
-                                        <td>${val['status']}</td>
-                                        <td>${createdAt}</td>
-                                    </tr>
-                                `);
-                            });
-
-                            tableTrack.empty().append(
-                                `<h5 class="float-start">Detail Tracking Status. Plant ${plant}, Sequence ${sequence}, Arrival Date ${arrival_date}</h5>
-                                <a href="javascript:void(0)" class="btn btn-md btn-danger float-end btn-hide-tracking"><i class="fa fa-close"></i></a>
-                                `
-                            ).append(resultTable);
-                        } else {
-                            tableTrack.empty();
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on("click", ".btn-in", function(e) {
-                let type_scenario = $(this).data('type_scenario'),
-                    arrival_date = $(this).data('arrival_date');
-
-                $.ajax({
-                    type: "post",
-                    url: '{{ route('get.detail.barrier') }}',
-                    data: {
-                        type_scenario: type_scenario,
-                        arrival_date: arrival_date,
-                    },
-                    dataType: "json",
-                    success: function(res) {
-                        const tableDb = $('.tabledb');
-                        if (res.length > 0) {
-                            const resultTable = $(
-                                `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
-                            );
-
-                            resultTable.append(`
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Plant</th>
-                                            <th>Sequence</th>
-                                            <th>Type Scenario</th>
-                                            <th>Scale 1</th>
-                                            <th>Scale 2</th>
-                                            <th>Scale 3</th>
-                                            <th>Scale 4</th>
-                                            <th style="width: 5%;">Created At</th>
-                                            <th style="width: 2%;">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                            `);
-                            const tableBody = resultTable.find('tbody');
-                            $.each(res, function(key, val) {
-                                const options = {
-                                    timeZone: 'Asia/Jakarta',
-                                    hour12: false,
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit'
-                                };
-                                const createdAt = new Date(val['created_at'])
-                                    .toLocaleString('en-US', options);
-
-                                tableBody.append(`
-                                    <tr>
-                                        <td>${key + 1}</td>
-                                        <td>${val['plant']}</td>
-                                        <td>${val['sequence']}</td>
-                                        <td>${val['type_scenario']}</td>
-                                        <td>
-                                            ${(val['scaling_date_1'] && val['scaling_time_1'] && val['qty_scaling_1']) ? 
-                                            `${val['scaling_date_1']} <br> ${val['scaling_time_1']} <br> ${val['qty_scaling_1']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_2'] && val['scaling_time_2'] && val['qty_scaling_2']) ? 
-                                            `${val['scaling_date_2']} <br> ${val['scaling_time_2']} <br>  ${val['qty_scaling_2']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_3'] && val['scaling_time_3'] && val['qty_scaling_3']) ? 
-                                            `${val['scaling_date_3']} <br> ${val['scaling_time_3']} <br> ${val['qty_scaling_3']} KG` : ''}
-                                               
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_4'] && val['scaling_time_4'] && val['qty_scaling_4']) ? 
-                                            `${val['scaling_date_4']} <br> ${val['scaling_time_4']} <br> ${val['qty_scaling_4']} KG` : ''}    
-                                        </td>
-                                        <td>${createdAt}</td>
-                                        <td>
-                                            <a href="javascript:void(0)" class="btn btn-xs btn-primary btn-tracking" data-plant="${val['plant']}" data-sequence="${val['sequence']}" data-arrival_date="${val['arrival_date']}"><i class="fa fa-eye"></i></a>
-                                        </td>
-                                    </tr>
-                                `);
-                            });
-
-                            tableDb.empty().append(
-                                `<h5 class="float-start">Detail Inbounds. Arrival Date ${arrival_date}</h5>
-                                <a href="javascript:void(0)" class="btn btn-md btn-danger float-end btn-hide-db"><i class="fa fa-close"></i></a>
-                                `
-                            ).append(resultTable);
-                        } else {
-                            tableDb.empty();
-                        }
-                    }
-                });
-            });
-
-            $(document).on("click", ".btn-out", function(e) {
-                let type_scenario = $(this).data('type_scenario'),
-                    arrival_date = $(this).data('arrival_date');
-
-                $.ajax({
-                    type: "post",
-                    url: '{{ route('get.detail.barrier') }}',
-                    data: {
-                        type_scenario: type_scenario,
-                        arrival_date: arrival_date,
-                    },
-                    dataType: "json",
-                    success: function(res) {
-                        const tableDb = $('.tabledb');
-                        if (res.length > 0) {
-                            const resultTable = $(
-                                `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
-                            );
-
-                            resultTable.append(`
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Plant</th>
-                                            <th>Sequence</th>
-                                            <th>Type Scenario</th>
-                                            <th>Scale 1</th>
-                                            <th>Scale 2</th>
-                                            <th>Scale 3</th>
-                                            <th>Scale 4</th>
-                                            <th style="width: 5%;">Created At</th>
-                                            <th style="width: 2%;">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                            `);
-                            const tableBody = resultTable.find('tbody');
-                            $.each(res, function(key, val) {
-                                const options = {
-                                    timeZone: 'Asia/Jakarta',
-                                    hour12: false,
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit'
-                                };
-                                const createdAt = new Date(val['created_at'])
-                                    .toLocaleString('en-US', options);
-
-                                tableBody.append(`
-                                    <tr>
-                                        <td>${key + 1}</td>
-                                        <td>${val['plant']}</td>
-                                        <td>${val['sequence']}</td>
-                                        <td>${val['type_scenario']}</td>
-                                        <td>
-                                            ${(val['scaling_date_1'] && val['scaling_time_1'] && val['qty_scaling_1']) ? 
-                                            `${val['scaling_date_1']} <br> ${val['scaling_time_1']} <br> ${val['qty_scaling_1']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_2'] && val['scaling_time_2'] && val['qty_scaling_2']) ? 
-                                            `${val['scaling_date_2']} <br> ${val['scaling_time_2']} <br>  ${val['qty_scaling_2']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_3'] && val['scaling_time_3'] && val['qty_scaling_3']) ? 
-                                            `${val['scaling_date_3']} <br> ${val['scaling_time_3']} <br> ${val['qty_scaling_3']} KG` : ''}
-                                               
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_4'] && val['scaling_time_4'] && val['qty_scaling_4']) ? 
-                                            `${val['scaling_date_4']} <br> ${val['scaling_time_4']} <br> ${val['qty_scaling_4']} KG` : ''}    
-                                        </td>
-                                        <td>${createdAt}</td>
-                                        <td>
-                                            <a href="javascript:void(0)" class="btn btn-xs btn-primary btn-tracking" data-plant="${val['plant']}" data-sequence="${val['sequence']}" data-arrival_date="${val['arrival_date']}"><i class="fa fa-eye"></i></a>
-                                        </td>
-                                    </tr>
-                                `);
-                            });
-
-                            tableDb.empty().append(
-                                `<h5 class="float-start">Detail Outbounds. Arrival Date ${arrival_date}</h5>
-                                <a href="javascript:void(0)" class="btn btn-md btn-danger float-end btn-hide-db"><i class="fa fa-close"></i></a>
-                                `
-                            ).append(resultTable);
-                        } else {
-                            tableDb.empty();
-                        }
-                    }
-                });
-            });
-            $(document).on("click", ".btn-oth", function(e) {
-                let type_scenario = $(this).data('type_scenario'),
-                    arrival_date = $(this).data('arrival_date');
-
-                $.ajax({
-                    type: "post",
-                    url: '{{ route('get.detail.barrier') }}',
-                    data: {
-                        type_scenario: type_scenario,
-                        arrival_date: arrival_date,
-                    },
-                    dataType: "json",
-                    success: function(res) {
-                        const tableDb = $('.tabledb');
-                        if (res.length > 0) {
-                            const resultTable = $(
-                                `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
-                            );
-
-                            resultTable.append(`
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Plant</th>
-                                            <th>Sequence</th>
-                                            <th>Type Scenario</th>
-                                            <th>Scale 1</th>
-                                            <th>Scale 2</th>
-                                            <th>Scale 3</th>
-                                            <th>Scale 4</th>
-                                            <th style="width: 5%;">Created At</th>
-                                            <th style="width: 2%;">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                            `);
-                            const tableBody = resultTable.find('tbody');
-                            $.each(res, function(key, val) {
-                                const options = {
-                                    timeZone: 'Asia/Jakarta',
-                                    hour12: false,
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit'
-                                };
-                                const createdAt = new Date(val['created_at'])
-                                    .toLocaleString('en-US', options);
-
-                                tableBody.append(`
-                                    <tr>
-                                        <td>${key + 1}</td>
-                                        <td>${val['plant']}</td>
-                                        <td>${val['sequence']}</td>
-                                        <td>${val['type_scenario']}</td>
-                                        <td>
-                                            ${(val['scaling_date_1'] && val['scaling_time_1'] && val['qty_scaling_1']) ? 
-                                            `${val['scaling_date_1']} <br> ${val['scaling_time_1']} <br> ${val['qty_scaling_1']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_2'] && val['scaling_time_2'] && val['qty_scaling_2']) ? 
-                                            `${val['scaling_date_2']} <br> ${val['scaling_time_2']} <br>  ${val['qty_scaling_2']} KG` : ''}    
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_3'] && val['scaling_time_3'] && val['qty_scaling_3']) ? 
-                                            `${val['scaling_date_3']} <br> ${val['scaling_time_3']} <br> ${val['qty_scaling_3']} KG` : ''}
-                                               
-                                        </td>
-                                        <td>
-                                            ${(val['scaling_date_4'] && val['scaling_time_4'] && val['qty_scaling_4']) ? 
-                                            `${val['scaling_date_4']} <br> ${val['scaling_time_4']} <br> ${val['qty_scaling_4']} KG` : ''}    
-                                        </td>
-                                        <td>${createdAt}</td>
-                                        <td>
-                                            <a href="javascript:void(0)" class="btn btn-xs btn-primary btn-tracking" data-plant="${val['plant']}" data-sequence="${val['sequence']}" data-arrival_date="${val['arrival_date']}"><i class="fa fa-eye"></i></a>
-                                        </td>
-                                    </tr>
-                                `);
-                            });
-                            tableDb.empty().append(
-                                `<h5 class="float-start">Detail Others. Arrival Date ${arrival_date}</h5>
-                                <a href="javascript:void(0)" class="btn btn-md btn-danger float-end btn-hide-db"><i class="fa fa-close"></i></a>
-                                `
-                            ).append(resultTable);
-                        } else {
-                            tableDb.empty();
-                        }
-                    }
-                });
+                searchReport(date_start, date_end);
             });
 
         });
 
-        async function dataReport(date_start, date_end) {
-            const tableLog = $('.tablelog'),
-                pieData = [],
-                barData1 = [],
-                arivalDateCharts = [];
-            let res = [],
-                barYAxisData = [],
-                app = {};
-            try {
-                $('.ajax-loader').css("visibility", "visible");
+        function searchReport(start, end) {
+            $.ajax({
+                type: "post",
+                url: '{{ route('ajax_get_report') }}',
+                data: {
+                    date_start: start,
+                    date_end: end
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    $('.ajax-loader').css("visibility", "visible");
+                },
+                success: function(res) {
+                    const tableReport = $('.table-report');
+                    if (res.data.length > 0) {
+                        // Helper function to convert duration to seconds
+                        const durationToSeconds = (duration) => {
+                            const [hours, minutes, seconds] = duration.split(":").map(Number);
+                            return hours * 3600 + minutes * 60 + seconds;
+                        };
 
-                const response = await fetch('{{ route('get.report') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        date_start: date_start,
-                        date_end: date_end,
-                        _token: '{{ csrf_token() }}'
-                    }),
-                });
+                        // Menghitung total durasi, unik codeProductpcs, dan unik codeProductBox
+                        let totalSeconds = 0;
+                        const uniquePcs = new Set();
+                        const uniqueBox = new Set();
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+                        const resultTable = $(
+                            `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
+                        );
 
-                res = await response.json();
-
-                app.config = {
-                    rotate: 90,
-                    align: 'left',
-                    verticalAlign: 'middle',
-                    position: 'insideBottom',
-                    distance: 15
-                };
-                const labelOption = {
-                    show: true,
-                    position: app.config.position,
-                    distance: app.config.distance,
-                    align: app.config.align,
-                    verticalAlign: app.config.verticalAlign,
-                    rotate: app.config.rotate,
-                    formatter: '{c}  {name|{a}}',
-                    fontSize: 16,
-                    rich: {
-                        name: {}
-                    }
-                };
-
-                if (res[0].length > 0) {
-                    // Create the entire result table with the specified class and append it to the tableLog div
-                    $(".report-title").empty().html('<h2 class="text-center">Report Barrier Gate</h2>');
-                    const resultTable = $(
-                        '<table class="table my-table my-tablelog my-table-striped w-100"></table>'
-                    );
-                    resultTable.append(`
-                        <thead>
-                            <tr>
-                                <th rowspan="2">No</th>
-                                <th rowspan="2">Arrival Date</th>
-                                <th rowspan="2">Inbound</th>
-                                <th rowspan="2">Outbound</th>
-                                <th rowspan="2">Other</th>
-                                <th colspan="3">WB1 (Open Gate)</th>
-                                <th colspan="3">WB2 (Open Gate)</th>
-                                <th colspan="3">WB3 (Open Gate)</th>
-                                <th colspan="3">WB4 (Open Gate)</th>
-                            </tr>
-                            <tr>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>1 & 2</th>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>1 & 2</th>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>1 & 2</th>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>1 & 2</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    `);
-
-                    const tableBody = resultTable.find('tbody');
-                    let sumIn = 0,
-                        sumOut = 0,
-                        sumOth = 0,
-                        sumGate1_1 = 0,
-                        sumGate1_2 = 0,
-                        sumGate1_12 = 0,
-                        sumGate2_1 = 0,
-                        sumGate2_2 = 0,
-                        sumGate2_12 = 0,
-                        sumGate3_1 = 0,
-                        sumGate3_2 = 0,
-                        sumGate3_12 = 0,
-                        sumGate4_1 = 0,
-                        sumGate4_2 = 0,
-                        sumGate4_12 = 0,
-                        count_gate_1_1 = 0,
-                        count_gate_1_2 = 0,
-                        count_gate_1_12 = 0,
-                        count_gate_1_1_SAP = 0,
-                        count_gate_1_1_WEB = 0,
-                        count_gate_1_2_SAP = 0,
-                        count_gate_1_2_WEB = 0,
-                        count_gate_2_1 = 0,
-                        count_gate_2_2 = 0,
-                        count_gate_2_12 = 0,
-                        count_gate_2_1_SAP = 0,
-                        count_gate_2_1_WEB = 0,
-                        count_gate_2_2_SAP = 0,
-                        count_gate_2_2_WEB = 0,
-                        count_gate_3_1 = 0,
-                        count_gate_3_2 = 0,
-                        count_gate_3_12 = 0,
-                        count_gate_3_1_SAP = 0,
-                        count_gate_3_1_WEB = 0,
-                        count_gate_3_2_SAP = 0,
-                        count_gate_3_2_WEB = 0,
-                        count_gate_4_1 = 0,
-                        count_gate_4_2 = 0,
-                        count_gate_4_12 = 0,
-                        count_gate_4_1_SAP = 0,
-                        count_gate_4_1_WEB = 0,
-                        count_gate_4_2_SAP = 0,
-                        count_gate_4_2_WEB = 0;
-
-                    // Iterate through the result and append rows to the table body
-                    $.each(res[0], function(key, val) {
-                        count_gate_1_1 = val['count_gate_1_1_sap'] + val['count_gate_1_1_web'];
-                        count_gate_1_2 = val['count_gate_1_2_sap'] + val['count_gate_1_2_web'];
-                        count_gate_1_12 = val['count_gate_1_12'];
-                        count_gate_2_1 = val['count_gate_2_1_sap'] + val['count_gate_2_1_web'];
-                        count_gate_2_2 = val['count_gate_2_2_sap'] + val['count_gate_2_2_web'];
-                        count_gate_2_12 = val['count_gate_2_12'];
-                        count_gate_3_1 = val['count_gate_3_1_sap'] + val['count_gate_3_1_web'];
-                        count_gate_3_2 = val['count_gate_3_2_sap'] + val['count_gate_3_2_web'];
-                        count_gate_3_12 = val['count_gate_3_12'];
-                        count_gate_4_1 = val['count_gate_4_1_sap'] + val['count_gate_4_1_web'];
-                        count_gate_4_2 = val['count_gate_4_2_sap'] + val['count_gate_4_2_web'];
-                        count_gate_4_12 = val['count_gate_4_12'];
-
-                        arivalDateCharts.push(val['arrival_date']);
-
-                        tableBody.append(`
-                            <tr>
-                                <td>${key + 1}</td>
-                                <td>${val['arrival_date']}</td>
-                                <td class="text-end"><a href="javascript:void(0)" data-type_scenario="inbound" data-arrival_date="${val['arrival_date']}" class="btn-in">${numberFormat(val['count_inbounds'])}</a> </td>
-                                <td class="text-end"><a href="javascript:void(0)" data-type_scenario="outbound" data-arrival_date="${val['arrival_date']}" class="btn-out">${numberFormat(val['count_outbounds'])}</a> </td>
-                                <td class="text-end"><a href="javascript:void(0)" data-type_scenario="others" data-arrival_date="${val['arrival_date']}" class="btn-oth">${numberFormat(val['count_others'])}</a> </td>
-                                <td class="text-end">${numberFormat(count_gate_1_1)}</td>
-                                <td class="text-end">${numberFormat(count_gate_1_2)}</td>
-                                <td class="text-end">${numberFormat(count_gate_1_12)}</td>
-                                <td class="text-end">${numberFormat(count_gate_2_1)}</td>
-                                <td class="text-end">${numberFormat(count_gate_2_2)}</td>
-                                <td class="text-end">${numberFormat(count_gate_2_12)}</td>
-                                <td class="text-end">${numberFormat(count_gate_3_1)}</td>
-                                <td class="text-end">${numberFormat(count_gate_3_2)}</td>
-                                <td class="text-end">${numberFormat(count_gate_3_12)}</td>
-                                <td class="text-end">${numberFormat(count_gate_4_1)}</td>
-                                <td class="text-end">${numberFormat(count_gate_4_2)}</td>
-                                <td class="text-end">${numberFormat(count_gate_4_12)}</td>
-                            </tr>
+                        resultTable.append(`
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Operator</th>
+                                    <th>Date Time</th>
+                                    <th>Production Code</th>
+                                    <th>Duration</th>
+                                    <th>Pcs Good (%)</th>
+                                    <th>Box Good (%)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
                         `);
 
-                        // Calculate sums
-                        sumIn += val['count_inbounds'];
-                        sumOut += val['count_outbounds'];
-                        sumOth += val['count_others'];
-                        count_gate_1_1_SAP += val['count_gate_1_1_sap'];
-                        count_gate_1_1_WEB += val['count_gate_1_1_web'];
-                        count_gate_1_2_SAP += val['count_gate_1_2_sap'];
-                        count_gate_1_2_WEB += val['count_gate_1_2_web'];
-                        count_gate_2_1_SAP += val['count_gate_2_1_sap'];
-                        count_gate_2_1_WEB += val['count_gate_2_1_web'];
-                        count_gate_2_2_SAP += val['count_gate_2_2_sap'];
-                        count_gate_2_2_WEB += val['count_gate_2_2_web'];
-                        count_gate_3_1_SAP += val['count_gate_3_1_sap'];
-                        count_gate_3_1_WEB += val['count_gate_3_1_web'];
-                        count_gate_3_2_SAP += val['count_gate_3_2_sap'];
-                        count_gate_3_2_WEB += val['count_gate_3_2_web'];
-                        count_gate_4_1_SAP += val['count_gate_4_1_sap'];
-                        count_gate_4_1_WEB += val['count_gate_4_1_web'];
-                        count_gate_4_2_SAP += val['count_gate_4_2_sap'];
-                        count_gate_4_2_WEB += val['count_gate_4_2_web'];
-                        sumGate1_1 += count_gate_1_1;
-                        sumGate1_2 += count_gate_1_2;
-                        sumGate1_12 += count_gate_1_12;
-                        sumGate2_1 += count_gate_2_1;
-                        sumGate2_2 += count_gate_2_2;
-                        sumGate2_12 += count_gate_2_12;
-                        sumGate3_1 += count_gate_3_1;
-                        sumGate3_2 += count_gate_3_2;
-                        sumGate3_12 += count_gate_3_12;
-                        sumGate4_1 += count_gate_4_1;
-                        sumGate4_2 += count_gate_4_2;
-                        sumGate4_12 += count_gate_4_12;
-                    });
+                        const tableBody = resultTable.find('tbody');
 
-                    // Calculate and append total row
-                    const totalRow = `
-                            <tr>
-                                <td colspan="2" class="text-center"><strong>Total</strong></td>
-                                <td class="text-end">${numberFormat(sumIn)}</td>
-                                <td class="text-end">${numberFormat(sumOut)}</td>
-                                <td class="text-end">${numberFormat(sumOth)}</td>
-                                <td class="text-end">${numberFormat(sumGate1_1)}</td>
-                                <td class="text-end">${numberFormat(sumGate1_2)}</td>
-                                <td class="text-end">${numberFormat(sumGate1_12)}</td>
-                                <td class="text-end">${numberFormat(sumGate2_1)}</td>
-                                <td class="text-end">${numberFormat(sumGate2_2)}</td>
-                                <td class="text-end">${numberFormat(sumGate2_12)}</td>
-                                <td class="text-end">${numberFormat(sumGate3_1)}</td>
-                                <td class="text-end">${numberFormat(sumGate3_2)}</td>
-                                <td class="text-end">${numberFormat(sumGate3_12)}</td>
-                                <td class="text-end">${numberFormat(sumGate4_1)}</td>
-                                <td class="text-end">${numberFormat(sumGate4_2)}</td>
-                                <td class="text-end">${numberFormat(sumGate4_12)}</td>
-                            </tr>
-                    `;
-                    tableBody.append(totalRow);
+                        $.each(res.data, function(key, val) {
+                            const options = {
+                                timeZone: 'Asia/Jakarta',
+                                hour12: false,
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            };
+                            const createdAt = new Date(val['starproduction'])
+                                .toLocaleString('en-US', options);
 
-                    // Append the entire result table to the tableLog div
-                    tableLog.empty().append(resultTable);
+                            const pcs1Good = parseInt(val['pcs1_percent_good']);
+                            const pcs2Good = parseInt(val['pcs2_percent_good']);
+                            const boxGood = parseInt(val['box_percecnt_good']);
+                            const totalGood = pcs1Good + pcs2Good;
 
-                    pieData.push({
-                        value: sumIn,
-                        name: 'Inbounds'
-                    }, {
-                        value: sumOut,
-                        name: 'Outbounds'
-                    }, {
-                        value: sumOth,
-                        name: 'Others'
-                    }, );
+                            totalSeconds += durationToSeconds(val['duration']);
+                            uniquePcs.add(val['codeProductpcs']);
+                            uniqueBox.add(val['codeProductBox']);
 
+                            tableBody.append(`
+                                    <tr>
+                                        <td>${key + 1}</td>
+                                        <td>${val['operator']}</td>
+                                        <td>${createdAt}</td>
+                                        <td>${val['CodeProduction']}</td>
+                                        <td>${val['duration']}</td>
+                                        <td>${totalGood}%</td>
+                                        <td>${boxGood}%</td>
+                                    </tr>
+                            `);
+                        });
 
-                    $.each(res[1], function(index, item) {
-                        if (item.name === null) {
-                            item.name = 'Undefined';
-                        }
-                    });
+                        // Konversi total detik kembali ke format HH:MM:SS
+                        const secondsToDuration = (seconds) => {
+                            const hours = Math.floor(seconds / 3600).toString().padStart(2, "0");
+                            const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+                            const secs = (seconds % 60).toString().padStart(2, "0");
+                            return `${hours}:${minutes}:${secs}`;
+                        };
 
-                    barData1.push({
-                        name: 'Jembatan Timbang 1',
-                        type: 'bar',
-                        barGap: 0,
-                        label: labelOption,
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [count_gate_1_1_SAP, count_gate_1_1_WEB, count_gate_1_2_SAP, count_gate_1_2_WEB,
-                            sumGate1_12
-                        ]
-                    }, {
-                        name: 'Jembatan Timbang 2',
-                        type: 'bar',
-                        barGap: 0,
-                        label: labelOption,
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [count_gate_2_1_SAP, count_gate_2_1_WEB, count_gate_2_2_SAP, count_gate_2_2_WEB,
-                            sumGate2_12
-                        ]
-                    }, {
-                        name: 'Jembatan Timbang 3',
-                        type: 'bar',
-                        barGap: 0,
-                        label: labelOption,
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [count_gate_3_1_SAP, count_gate_3_1_WEB, count_gate_3_2_SAP, count_gate_3_2_WEB,
-                            sumGate3_12
-                        ]
-                    }, {
-                        name: 'Jembatan Timbang 4',
-                        type: 'bar',
-                        barGap: 0,
-                        label: labelOption,
-                        emphasis: {
-                            focus: 'series'
-                        },
-                        data: [count_gate_4_1_SAP, count_gate_4_1_WEB, count_gate_4_2_SAP, count_gate_4_2_WEB,
-                            sumGate4_12
-                        ]
-                    });
-
-                    pieCharts('pc-scenario', 'Type Scenario', pieData);
-
-                    pieCharts('pc-truck', 'Type Truck', res[1]);
-
-                    pieCharts('pc-allscenario', 'All TypeScenario', res[2]);
-
-                    barCharts('bc-scale', 'Summary Weight Barrier', ['Open gate 1 by SAP',
-                        'Open gate 1 by Dashboard',
-                        'Open gate 2 by SAP',
-                        'Open gate 2 by Dashboard', 'Open gate 1 & 2'
-                    ], barData1);
-
-                } else {
-                    // Display "Data Not Found" message in the tableLog div
-                    tableLog.html(`
-                        <p class="text-center">Data Not Found</p>
-                    `);
+                        tableReport.empty().append(resultTable);
+                        $('.btn-excell').show();
+                        $('.btn-pdf').show();
+                        $('.row-akumulasi').show();
+                        // SET AKUMULASI
+                        $('.akm-date-from').html(start);
+                        $('.akm-date-to').html(end);
+                        $('.akm-tot-batch').html(res.data.length);
+                        $('.akm-tot-dur').html(secondsToDuration(totalSeconds));
+                        $('.akm-tot-pcs').html(uniquePcs.size);
+                        $('.akm-tot-box').html(uniqueBox.size);
+                        // END SET AKUMULASI
+                    } else {
+                        tableReport.empty();
+                        $('.btn-excell').hide();
+                        $('.btn-pdf').hide();
+                        $('.row-akumulasi').hide();
+                        // SET AKUMULASI
+                        $('.akm-date-from').html("");
+                        $('.akm-date-to').html("");
+                        $('.akm-tot-batch').html("");
+                        $('.akm-tot-dur').html("");
+                        $('.akm-tot-pcs').html("");
+                        $('.akm-tot-box').html("");
+                        // END SET AKUMULASI
+                    }
+                },
+                complete: function() {
+                    $('.ajax-loader').css("visibility", "hidden");
                 }
-            } catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                $('.ajax-loader').css("visibility", "hidden");
-            }
+            });
         }
+
 
         function numberFormat(number) {
             return Number(number).toLocaleString('en-US');
-        }
-
-        function pieCharts(chartID, chartText, pieData) {
-            let chartPie = document.getElementById(chartID);
-            let myChart = echarts.init(chartPie);
-            let option;
-
-            option = {
-                title: {
-                    text: chartText,
-                    left: 'center',
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
-                },
-                legend: {
-                    top: 'bottom'
-                },
-                series: [{
-                    name: chartText,
-                    type: 'pie',
-                    radius: ['45%', '60%'],
-                    labelLine: {
-                        length: 15
-                    },
-                    label: {
-                        formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                        backgroundColor: '#F6F8FC',
-                        borderColor: '#8C8D8E',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        rich: {
-                            a: {
-                                color: '#6E7079',
-                                lineHeight: 22,
-                                align: 'center'
-                            },
-                            hr: {
-                                borderColor: '#8C8D8E',
-                                width: '100%',
-                                borderWidth: 1,
-                                height: 0
-                            },
-                            b: {
-                                color: '#4C5058',
-                                fontSize: 14,
-                                fontWeight: 'bold',
-                                lineHeight: 33
-                            },
-                            per: {
-                                color: '#fff',
-                                backgroundColor: '#4C5058',
-                                padding: [3, 4],
-                                borderRadius: 4
-                            }
-                        }
-                    },
-                    data: pieData
-                }]
-            };
-
-            option && myChart.setOption(option);
-            $(window).on('resize', function() {
-                if (myChart != null && myChart != undefined) {
-                    myChart.resize();
-                }
-            });
-        }
-
-        function barCharts(chartID, chartText, xAxisData, barData) {
-            let chartDom = document.getElementById(chartID);
-            let myChart = echarts.init(chartDom);
-            let option;
-
-            option = {
-                title: {
-                    text: chartText,
-                    left: 'center',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {
-                    top: 'bottom'
-                },
-                xAxis: [{
-                    type: 'category',
-                    axisTick: {
-                        show: false
-                    },
-                    data: xAxisData
-                }],
-                yAxis: [{
-                    type: 'value'
-                }],
-                series: barData
-            };
-
-            option && myChart.setOption(option);
-            $(window).on('resize', function() {
-                if (myChart != null && myChart != undefined) {
-                    myChart.resize();
-                }
-            });
         }
     </script>
 @endsection
