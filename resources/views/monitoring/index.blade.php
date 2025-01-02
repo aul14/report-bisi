@@ -15,7 +15,7 @@
     <script>
         $(function () {
             // ConnectWsMonitoring();
-            let svgExample = "{{ asset('assets/images/svg/mainpage.svg') }}";
+            let svgExample = "{{ asset('assets/images/svg/AllLine.svg') }}";
             scadavisInit({
                 container: 'main-svg',
                 iframeparams: 'frameborder="0" height="1080" width="1920"',
