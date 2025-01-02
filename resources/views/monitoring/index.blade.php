@@ -5,7 +5,9 @@
         <div class="card">
             <div class="card-body px-1">
                 <div class="row">
-                    <div class="col-lg-12 col-sm-12" id="main-svg"></div>
+                    <div class="col-lg-12 col-sm-12" id="main-svg">
+                        <img src="{{ asset('assets/images/svg/AllLine.svg') }}" alt="">
+                    </div>
                 </div>
             </div>
         </div>
@@ -14,7 +16,7 @@
 @section('script')
     <script>
         $(function () {
-            ConnectWsMonitoring();
+            // ConnectWsMonitoring();
         });
         function ConnectWsMonitoring() {
             let ws_url = $("input[name=ws_url]").val();
