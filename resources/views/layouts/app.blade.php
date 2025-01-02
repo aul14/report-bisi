@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
     <link rel="icon" type="image/png" href="{{ asset('img/icon-bisi.png') }}">
     <title>
-        Barrier Gate
+        Report
     </title>
     <!--  Fonts and icons  -->
     <link href="{{ asset('assets/css/font-google.css?v=1.0.0') }}" rel="stylesheet" />
