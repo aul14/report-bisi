@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Providers\PlaintextUserProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        // $this->registerPolicies();
+        $this->app['auth']->provider('plaintext', function ($app, array $config) {
+            return new PlaintextUserProvider($app['hash'], $config['model']);
+        });
     }
 }

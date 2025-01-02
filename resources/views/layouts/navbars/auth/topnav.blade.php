@@ -18,7 +18,7 @@
             <div class="btn-group" role="group">
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    User
+                    {{ session('username') }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
@@ -29,8 +29,8 @@
                             <i class="fa fa-tv"></i> Monitoring</a>
                     </li>
 
-                    {{-- <li>
-                        <form role="form" method="post" action="javascript:void(0)" id="logout-form">
+                    <li>
+                        <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
                             @csrf
                             <button type="submit" class="dropdown-item"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -38,7 +38,7 @@
                                 <i class="fa fa-power-off"></i> Logout
                             </button>
                         </form>
-                    </li> --}}
+                    </li>
                 </ul>
             </div>
 
