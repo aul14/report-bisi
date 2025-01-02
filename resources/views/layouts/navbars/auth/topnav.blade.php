@@ -14,19 +14,22 @@
                 {{ $title }}</h5>
         </nav>
 
-        {{-- <div class="collapse navbar-collapse d-flex me-4 justify-content-end" id="navbar">
+        <div class="collapse navbar-collapse d-flex me-4 justify-content-end" id="navbar">
             <div class="btn-group" role="group">
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    User Testing
+                    User
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-                    <li><a class="dropdown-item btn-register" href="javascript:void(0)">
+                    <li><a class="dropdown-item" href="{{ url('/') }}">
                             <i class="fa fa-folder"></i> Report</a>
                     </li>
+                    <li><a class="dropdown-item" href="{{ route('monitoring') }}">
+                            <i class="fa fa-tv"></i> Monitoring</a>
+                    </li>
 
-                    <li>
+                    {{-- <li>
                         <form role="form" method="post" action="javascript:void(0)" id="logout-form">
                             @csrf
                             <button type="submit" class="dropdown-item"
@@ -35,11 +38,11 @@
                                 <i class="fa fa-power-off"></i> Logout
                             </button>
                         </form>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
 
-        </div> --}}
+        </div>
 
     </div>
 </nav>

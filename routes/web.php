@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ReportController;
 
 
@@ -23,6 +24,7 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 
 
 Route::get('/', [ReportController::class, 'index'])->name('report.index');
+Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
 Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
 // Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
 // });
