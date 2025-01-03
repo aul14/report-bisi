@@ -14,18 +14,7 @@
 @section('script')
     <script>
         $(function () {
-            // ConnectWsMonitoring();
-            let svgExample = "{{ asset('assets/images/svg/AllLine-New.svg') }}";
-            scadavisInit({
-                container: 'main-svg',
-                iframeparams: 'frameborder="0" height="1080" width="1920"',
-                svgurl: svgExample
-            }).then(sv => {
-                sv.zoomTo(2.24);
-                sv.enableTools(true, true);
-                sv.hideWatermark();
-
-            });
+            ConnectWsMonitoring();
         });
         function ConnectWsMonitoring() {
             let ws_url = $("input[name=ws_url]").val();
@@ -37,13 +26,13 @@
             };
 
             $('#main-svg').html("");
-            let svgExample = "{{ asset('assets/images/svg/AllLine.svg') }}";
+            let svgExample = "{{ asset('assets/images/svg/AllLine-New.svg') }}";
             scadavisInit({
                 container: 'main-svg',
                 iframeparams: 'frameborder="0" height="1080" width="1920"',
                 svgurl: svgExample
             }).then(sv => {
-                sv.zoomTo(2.24);
+                sv.zoomTo(5.50);
                 sv.enableTools(true, true);
                 sv.hideWatermark();
 
