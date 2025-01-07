@@ -37,5 +37,8 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::get('/pcs/show', [ProductPcsController::class, 'show'])->name('pcs.show');
     Route::delete('/pcs/destroy', [ProductPcsController::class, 'destroy'])->name('pcs.destroy');
     Route::get('/box', [ProductBoxController::class, 'index'])->name('box.get');
+    Route::post('/box/store', [ProductBoxController::class, 'store'])->name('box.store');
+    Route::get('/box/show', [ProductBoxController::class, 'show'])->name('box.show');
+    Route::delete('/box/destroy', [ProductBoxController::class, 'destroy'])->name('box.destroy');
     Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
 });
