@@ -391,7 +391,7 @@ table.my-tableview tr td {
 }
 
 
-.my-tableview tbody td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+/* .my-tableview tbody td:nth-child(2), td:nth-child(3), td:nth-child(4) {
     text-transform: capitalize;
     width: 2%;
     text-align: center;
@@ -410,7 +410,7 @@ table.my-tableview tr td {
 .my-tableview tbody td:nth-child(7) {
     text-align: center;
     width: 2%;
-}
+} */
 
 /* /my table */
 /* my table only  */

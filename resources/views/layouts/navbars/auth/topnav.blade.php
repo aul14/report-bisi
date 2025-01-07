@@ -28,6 +28,12 @@
                     <li><a class="dropdown-item" href="{{ route('monitoring') }}">
                             <i class="fa fa-tv"></i> Monitoring</a>
                     </li>
+                    <li><a class="dropdown-item" href="{{ route('pcs.get') }}">
+                            <i class="fa fa-circle"></i> Product Pcs</a>
+                    </li>
+                    <li><a class="dropdown-item" href="{{ route('box.get') }}">
+                            <i class="fa fa-box"></i> Product Box</a>
+                    </li>
 
                     <li>
                         <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">

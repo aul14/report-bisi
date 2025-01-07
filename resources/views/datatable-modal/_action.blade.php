@@ -1,15 +1,8 @@
-@if (auth()->user()->role == 'admin')
-    <a href="javascript:void(0)" data-href="{{ $edit_url }}" data-id="{{ $row_id }}"
-        class="btn btn-xs btn-success btn-edit-user" title="Edit"> <i class="fa fa-pencil"></i>
-    </a>
-    @if ($row_id != auth()->user()->id)
-        <form action="{{ $delete_url }}" method="post" class="d-inline">
-            @method('delete')
-            @csrf
-            <button type="submit" class="btn btn-xs btn-danger" title="Delete"
-                onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>
-            </button>
-        </form>
-    @endif
+@if ($makeEdit)
+    <a href="javascript:void(0)" data-id="{{ $row_id }}" class="btn btn-xs btn-primary {{ $class_edit }}">
+        <i class="fas fa-edit"></i> Edit</a>
 @endif
-<a href="{{ $log_url }}" class="btn btn-xs btn-warning" title="Log User"> <i class="fa fa-user-check"></i>
+@if ($makeDelete)
+    <a href="javascript:void(0)" data-id="{{ $row_id }}" class="btn btn-xs btn-danger {{ $class_delete }}">
+        <i class="fas fa-trash"></i> Delete</a>
+@endif

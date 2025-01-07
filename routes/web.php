@@ -16,6 +16,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\ProductBoxController;
+use App\Http\Controllers\ProductPcsController;
 use App\Http\Controllers\ReportController;
 
 
@@ -30,5 +32,10 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::get('/', [ReportController::class, 'index'])->name('report.index');
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
+    Route::get('/pcs', [ProductPcsController::class, 'index'])->name('pcs.get');
+    Route::post('/pcs/store', [ProductPcsController::class, 'store'])->name('pcs.store');
+    Route::get('/pcs/show', [ProductPcsController::class, 'show'])->name('pcs.show');
+    Route::delete('/pcs/destroy', [ProductPcsController::class, 'destroy'])->name('pcs.destroy');
+    Route::get('/box', [ProductBoxController::class, 'index'])->name('box.get');
     Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
 });
