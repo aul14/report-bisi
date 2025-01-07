@@ -25,13 +25,14 @@ class LoginController extends Controller
         endif;
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
-      
+
         Session::put('login_id', $user->idUsers);
         Session::put('username', $user->UserName);
+        Session::put('fullname', $user->FullName);
 
         // Auth::setUser($user);
         Auth::loginUsingId($user->idUsers);
-        
+
         return $this->authenticated($request, $user);
     }
 

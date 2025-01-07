@@ -14,11 +14,11 @@
                 {{ $title }}</h5>
         </nav>
 
-        <div class="collapse navbar-collapse d-flex me-4 justify-content-end" id="navbar">
+        <div class="collapse navbar-collapse d-flex me-5 justify-content-end" id="navbar">
             <div class="btn-group" role="group">
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ session('username') }}
+                    {{ session('fullname') }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
@@ -33,6 +33,9 @@
                     </li>
                     <li><a class="dropdown-item" href="{{ route('box.get') }}">
                             <i class="fa fa-box"></i> Product Box</a>
+                    </li>
+                    <li><a class="dropdown-item" href="{{ route('batch_production.get') }}">
+                            <i class="fa fa-gear"></i> Batch Production</a>
                     </li>
 
                     <li>

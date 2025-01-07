@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BatchProductionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,5 +41,11 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::post('/box/store', [ProductBoxController::class, 'store'])->name('box.store');
     Route::get('/box/show', [ProductBoxController::class, 'show'])->name('box.show');
     Route::delete('/box/destroy', [ProductBoxController::class, 'destroy'])->name('box.destroy');
+    Route::get('/batch_production', [BatchProductionController::class, 'index'])->name('batch_production.get');
+    Route::post('/batch_production/store', [BatchProductionController::class, 'store'])->name('batch_production.store');
+    Route::get('/batch_production/show', [BatchProductionController::class, 'show'])->name('batch_production.show');
+    Route::delete('/batch_production/destroy', [BatchProductionController::class, 'destroy'])->name('batch_production.destroy');
+    Route::post('/batch_production/product_pcs', [BatchProductionController::class, 'getProductPcs'])->name('batch_production.get.product_pcs');
+    Route::post('/batch_production/product_box', [BatchProductionController::class, 'getProductBox'])->name('batch_production.get.product_box');
     Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
 });
