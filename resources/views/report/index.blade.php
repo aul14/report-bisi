@@ -20,8 +20,8 @@
                         <div class="col-md-12 my-2">
                             <a href="{{ route('report.index') }}" class="btn btn-md btn-outline-warning">Refresh</a>
                             <a href="javascript:void(0)" class="btn btn-md btn-outline-primary btn-search">Search</a>
-                            <a href="javascript:void(0)" class="btn btn-md btn-outline-danger btn-pdf"
-                                style="display: none">PDF</a>
+                            {{-- <a href="javascript:void(0)" class="btn btn-md btn-outline-danger btn-pdf"
+                            style="display: none">PDF</a> --}}
                             <a href="javascript:void(0)" class="btn btn-md btn-outline-success btn-excell"
                                 style="display: none">Excell</a>
                         </div>
@@ -90,6 +90,9 @@
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/export-excell/html2canvas.min.js') }}"></script>
+    <script src="{{ asset('assets/export-excell/exceljs.min.js') }}"></script>
+
     <script>
         $(function() {
             $.ajaxSetup({
@@ -514,6 +517,11 @@
                         $('.akm-tot-pcs').html(uniquePcs.size);
                         $('.akm-tot-box').html(uniqueBox.size);
                         // END SET AKUMULASI
+
+                        // Event listener untuk ekspor Excel
+                        $('.btn-excell').on('click', function() {
+                            exportReportToExcel(res);
+                        });
                     } else {
                         tableReport.empty();
                         $('.btn-excell').hide();
@@ -534,6 +542,553 @@
                 }
             });
         }
+
+        async function exportReportToExcel(res) {
+            // Buat workbook dan worksheet
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Report');
+
+            // Ambil data dari HTML
+            const dateFrom = document.querySelector('.akm-date-from').textContent.trim();
+            const dateTo = document.querySelector('.akm-date-to').textContent.trim();
+            const totalBatch = document.querySelector('.akm-tot-batch').textContent.trim();
+            const totalDuration = document.querySelector('.akm-tot-dur').textContent.trim();
+            const totalPcs = document.querySelector('.akm-tot-pcs').textContent.trim();
+            const totalBox = document.querySelector('.akm-tot-box').textContent.trim();
+
+            // Menangkap chart menggunakan html2canvas
+            const chart1 = document.getElementById('pc3-pcs'); // chart untuk "Jenis Barang"
+            const chart2 = document.getElementById('pc4-box'); // chart untuk "Jenis Kendaraan"
+
+            const chart1Canvas = await html2canvas(chart1);
+            const chart2Canvas = await html2canvas(chart2);
+
+            const chart1Img = chart1Canvas.toDataURL('image/png');
+            const chart2Img = chart2Canvas.toDataURL('image/png');
+
+            // Tambahkan data teks ke worksheet sebelum gambar
+            worksheet.getCell('A1').value = 'Date From';
+            worksheet.getCell('B1').value = ':';
+            worksheet.getCell('C1').value = dateFrom;
+            worksheet.getCell('A2').value = 'Date To';
+            worksheet.getCell('B2').value = ':';
+            worksheet.getCell('C2').value = dateTo;
+            worksheet.getCell('A3').value = 'Total Batch';
+            worksheet.getCell('B3').value = ':';
+            worksheet.getCell('C3').value = totalBatch;
+            worksheet.getCell('D1').value = 'Total Duration';
+            worksheet.getCell('E1').value = ':';
+            worksheet.getCell('F1').value = totalDuration;
+            worksheet.getCell('D2').value = 'Total Pcs';
+            worksheet.getCell('E2').value = ':';
+            worksheet.getCell('F2').value = totalPcs;
+            worksheet.getCell('D3').value = 'Total Box';
+            worksheet.getCell('E3').value = ':';
+            worksheet.getCell('F3').value = totalBox;
+
+            // Atur format teks data
+            worksheet.getCell('A1').font = {
+                bold: true
+            };
+            worksheet.getCell('A2').font = {
+                bold: true
+            };
+            worksheet.getCell('A3').font = {
+                bold: true
+            };
+            worksheet.getCell('D1').font = {
+                bold: true
+            };
+            worksheet.getCell('D2').font = {
+                bold: true
+            };
+            worksheet.getCell('D3').font = {
+                bold: true
+            };
+
+
+            // Menambahkan gambar chart ke worksheet setelah teks
+            const chart1ImageId = workbook.addImage({
+                base64: chart1Img,
+                extension: 'png',
+            });
+
+            const chart2ImageId = workbook.addImage({
+                base64: chart2Img,
+                extension: 'png',
+            });
+
+            worksheet.addImage(chart1ImageId, 'A7:D18'); // Gambar pertama (chart jenis barang)
+            worksheet.addImage(chart2ImageId, 'E7:H18'); // Gambar kedua (chart jenis kendaraan)
+
+            // Tambahkan tabel kolom di bawah gambar
+            worksheet.mergeCells('A19:W19');
+            worksheet.getCell('A19').value = 'Report';
+            worksheet.getCell('A19').font = {
+                size: 14,
+                bold: true
+            };
+            worksheet.getCell('A19').alignment = {
+                vertical: 'middle',
+                horizontal: 'center'
+            };
+
+            // Definisikan kolom tabel dimulai dari baris setelah gambar
+            worksheet.columns = [{
+                    key: 'no',
+                    width: 5
+                },
+                {
+                    key: 'CodeProduction',
+                    width: 20
+                },
+                {
+                    key: 'codeProductpcs',
+                    width: 20
+                },
+                {
+                    key: 'codeProductBox',
+                    width: 20
+                },
+                {
+                    key: 'duration',
+                    width: 20
+                },
+                {
+                    key: 'line_number',
+                    width: 20
+                },
+                {
+                    key: 'pcs1_number_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_weight_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_average_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_number_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_weight_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_average_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_percent_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_number_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_weright_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_average_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_percent_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_number_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_weight_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_average_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_percent_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_number_error',
+                    width: 25
+                },
+                {
+                    key: 'pcs1_percent_error',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_number_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_weight_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_average_total',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_number_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_weight_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_average_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_percent_overweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_number_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_weright_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_average_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_percent_good',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_number_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_weight_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_average_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_percent_underweight',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_number_error',
+                    width: 25
+                },
+                {
+                    key: 'pcs2_percent_error',
+                    width: 25
+                },
+                {
+                    key: 'box_number_total',
+                    width: 25
+                },
+                {
+                    key: 'box_weight_total',
+                    width: 25
+                },
+                {
+                    key: 'box_average_total',
+                    width: 25
+                },
+                {
+                    key: 'box_number_overweight',
+                    width: 25
+                },
+                {
+                    key: 'box_weight_overweight',
+                    width: 25
+                },
+                {
+                    key: 'box_average_overweight',
+                    width: 25
+                },
+                {
+                    key: 'box_percent_overweight',
+                    width: 25
+                },
+                {
+                    key: 'box_number_good',
+                    width: 25
+                },
+                {
+                    key: 'box_weright_good',
+                    width: 25
+                },
+                {
+                    key: 'box_average_good',
+                    width: 25
+                },
+                {
+                    key: 'box_percent_good',
+                    width: 25
+                },
+                {
+                    key: 'box_number_underweight',
+                    width: 25
+                },
+                {
+                    key: 'box_weight_underweight',
+                    width: 25
+                },
+                {
+                    key: 'box_average_underweight',
+                    width: 25
+                },
+                {
+                    key: 'box_percent_underweight',
+                    width: 25
+                },
+                {
+                    key: 'box_number_error',
+                    width: 25
+                },
+                {
+                    key: 'box_percent_error',
+                    width: 25
+                },
+            ];
+
+            // Data diambil dari res[] (sesuaikan dengan data Anda)
+            const data = res.data; // Sesuaikan ini dengan data yang dihasilkan dari jQuery
+            const tableData = data.map((row, index) => ({
+                no: index + 1,
+                CodeProduction: row.CodeProduction,
+                codeProductpcs: row.codeProductpcs,
+                codeProductBox: row.codeProductBox,
+                duration: row.duration,
+                line_number: row.line_number,
+                pcs1_number_total: row.pcs1_number_total,
+                pcs1_weight_total: row.pcs1_weight_total,
+                pcs1_average_total: row.pcs1_average_total,
+                pcs1_number_overweight: row.pcs1_number_overweight,
+                pcs1_weight_overweight: row.pcs1_weight_overweight,
+                pcs1_average_overweight: row.pcs1_average_overweight,
+                pcs1_percent_overweight: row.pcs1_percent_overweight,
+                pcs1_number_good: row.pcs1_number_good,
+                pcs1_weright_good: row.pcs1_weright_good,
+                pcs1_average_good: row.pcs1_average_good,
+                pcs1_percent_good: row.pcs1_percent_good,
+                pcs1_number_underweight: row.pcs1_number_underweight,
+                pcs1_weight_underweight: row.pcs1_weight_underweight,
+                pcs1_average_underweight: row.pcs1_average_underweight,
+                pcs1_percent_underweight: row.pcs1_percent_underweight,
+                pcs1_number_error: row.pcs1_number_error,
+                pcs1_percent_error: row.pcs1_percent_error,
+                pcs2_number_total: row.pcs2_number_total,
+                pcs2_weight_total: row.pcs2_weight_total,
+                pcs2_average_total: row.pcs2_average_total,
+                pcs2_number_overweight: row.pcs2_number_overweight,
+                pcs2_weight_overweight: row.pcs2_weight_overweight,
+                pcs2_average_overweight: row.pcs2_average_overweight,
+                pcs2_percent_overweight: row.pcs2_percent_overweight,
+                pcs2_number_good: row.pcs2_number_good,
+                pcs2_weright_good: row.pcs2_weright_good,
+                pcs2_average_good: row.pcs2_average_good,
+                pcs2_percent_good: row.pcs2_percent_good,
+                pcs2_number_underweight: row.pcs2_number_underweight,
+                pcs2_weight_underweight: row.pcs2_weight_underweight,
+                pcs2_average_underweight: row.pcs2_average_underweight,
+                pcs2_percent_underweight: row.pcs2_percent_underweight,
+                pcs2_number_error: row.pcs2_number_error,
+                pcs2_percent_error: row.pcs2_percent_error,
+                box_number_total: row.box_number_total,
+                box_weight_total: row.box_weight_total,
+                box_average_total: row.box_average_total,
+                box_number_overweight: row.box_number_overweight,
+                box_weight_overweight: row.box_weight_overweight,
+                box_average_overweight: row.box_average_overweight,
+                box_percent_overweight: row.box_percent_overweight,
+                box_number_good: row.box_number_good,
+                box_weight_good: row.box_weight_good,
+                box_average_good: row.box_average_good,
+                box_percent_good: row.box_percent_good,
+                box_number_underweight: row.box_number_underweight,
+                box_weight_underweight: row.box_weight_underweight,
+                box_average_underweight: row.box_average_underweight,
+                box_percent_underweight: row.box_percent_underweight,
+                box_number_error: row.box_number_error,
+                box_percent_error: row.box_percent_error,
+            }));
+
+            // Definisikan header untuk tabel
+            const tableHeader = ['No', 'Code Production', 'Code Pcs', 'Code Box', 'Duration', 'Line Number',
+                'PCS 1 - Number Total', 'PCS 1 - Weight Total', 'PCS 1 - AVG Total',
+                'PCS 1 - Number Over Weight', 'PCS 1 - Weight Over Weight', 'PCS 1 - AVG Over Weight',
+                'PCS 1 - Percent Over Weight', 'PCS 1 - Number Good', 'PCS 1 - Weight Good', 'PCS 1 - AVG Good',
+                'PCS 1 - Percent Good',
+                'PCS 1 - Number Under Weight', 'PCS 1 - Weight Under Weight', 'PCS 1 - AVG Under Weight',
+                'PCS 1 - Percent Under Weight', 'PCS 1 - Number Error',
+                'PCS 1 - Percent Error', 'PCS 2 - Number Total', 'PCS 2 - Weight Total', 'PCS 2 - AVG Total',
+                'PCS 2 - Number Over Weight', 'PCS 2 - Weight Over Weight', 'PCS 2 - AVG Over Weight',
+                'PCS 2 - Percent Over Weight', 'PCS 2 - Number Good', 'PCS 2 - Weight Good', 'PCS 2 - AVG Good',
+                'PCS 2 - Percent Good',
+                'PCS 2 - Number Under Weight', 'PCS 2 - Weight Under Weight', 'PCS 2 - AVG Under Weight',
+                'PCS 2 - Percent Under Weight', 'PCS 2 - Number Error',
+                'PCS 2 - Percent Error', 'BOX - Number Total', 'BOX - Weight Total', 'BOX - AVG Total',
+                'BOX - Number Over Weight', 'BOX - Weight Over Weight', 'BOX - AVG Over Weight',
+                'BOX - Percent Over Weight', 'BOX - Number Good', 'BOX - Weight Good', 'BOX - AVG Good',
+                'BOX - Percent Good',
+                'BOX - Number Under Weight', 'BOX - Weight Under Weight', 'BOX - AVG Under Weight',
+                'BOX - Percent Under Weight', 'BOX - Number Error',
+                'BOX - Percent Error'
+            ];
+
+            // Tambahkan header ke baris 20
+            worksheet.addRow(tableHeader);
+
+            worksheet.getRow(20).eachCell((cell) => {
+                cell.font = {
+                    bold: true
+                }; // Set font bold untuk header
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center'
+                };
+            });
+
+            // Tambahkan data ke worksheet dimulai dari baris 21
+            tableData.forEach((row) => {
+                worksheet.addRow(row);
+            });
+
+            // Hitung total untuk setiap kolom dan tambahkan di baris footer
+            const footer = {
+                no: 'Total',
+                pcs1_number_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_number_total || 0), 0),
+                pcs1_weight_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_weight_total || 0), 0),
+                pcs1_average_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_average_total || 0),
+                    0),
+                pcs1_number_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_number_overweight || 0), 0),
+                pcs1_weight_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_weight_overweight || 0), 0),
+                pcs1_average_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_average_overweight || 0), 0),
+                pcs1_percent_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_percent_overweight || 0), 0),
+                pcs1_number_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_number_good || 0), 0),
+                pcs1_weright_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_weright_good || 0), 0),
+                pcs1_average_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_average_good || 0), 0),
+                pcs1_percent_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_percent_good || 0), 0),
+                pcs1_number_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_number_underweight || 0), 0),
+                pcs1_weight_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_weight_underweight || 0), 0),
+                pcs1_average_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_average_underweight || 0), 0),
+                pcs1_percent_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs1_percent_underweight || 0), 0),
+                pcs1_number_error: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_number_error || 0), 0),
+                pcs1_percent_error: tableData.reduce((sum, row) => sum + parseFloat(row.pcs1_percent_error || 0),
+                    0),
+                pcs2_number_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_number_total || 0), 0),
+                pcs2_weight_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_weight_total || 0), 0),
+                pcs2_average_total: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_average_total || 0),
+                    0),
+                pcs2_number_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_number_overweight || 0), 0),
+                pcs2_weight_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_weight_overweight || 0), 0),
+                pcs2_average_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_average_overweight || 0), 0),
+                pcs2_percent_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_percent_overweight || 0), 0),
+                pcs2_number_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_number_good || 0), 0),
+                pcs2_weright_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_weright_good || 0), 0),
+                pcs2_average_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_average_good || 0), 0),
+                pcs2_percent_good: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_percent_good || 0), 0),
+                pcs2_number_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_number_underweight || 0), 0),
+                pcs2_weight_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_weight_underweight || 0), 0),
+                pcs2_average_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_average_underweight || 0), 0),
+                pcs2_percent_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .pcs2_percent_underweight || 0), 0),
+                pcs2_number_error: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_number_error || 0), 0),
+                pcs2_percent_error: tableData.reduce((sum, row) => sum + parseFloat(row.pcs2_percent_error || 0),
+                    0),
+                box_number_total: tableData.reduce((sum, row) => sum + parseFloat(row.box_number_total || 0), 0),
+                box_weight_total: tableData.reduce((sum, row) => sum + parseFloat(row.box_weight_total || 0), 0),
+                box_average_total: tableData.reduce((sum, row) => sum + parseFloat(row.box_average_total || 0),
+                    0),
+                box_number_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_number_overweight || 0), 0),
+                box_weight_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_weight_overweight || 0), 0),
+                box_average_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_average_overweight || 0), 0),
+                box_percent_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_percent_overweight || 0), 0),
+                box_number_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_number_good || 0), 0),
+                box_weright_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_weight_good || 0), 0),
+                box_average_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_average_good || 0), 0),
+                box_percent_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_percent_good || 0), 0),
+                box_number_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_number_underweight || 0), 0),
+                box_weight_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_weight_underweight || 0), 0),
+                box_average_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_average_underweight || 0), 0),
+                box_percent_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
+                    .box_percent_underweight || 0), 0),
+                box_number_error: tableData.reduce((sum, row) => sum + parseFloat(row.box_number_error || 0), 0),
+                box_percent_error: tableData.reduce((sum, row) => sum + parseFloat(row.box_percent_error || 0),
+                    0),
+            };
+
+            // Menambahkan footer ke worksheet
+            worksheet.addRow(footer);
+
+            // Menggabungkan sel untuk "Total" dari kolom No hingga Line Number
+            worksheet.mergeCells('A' + worksheet.lastRow.number + ':F' + worksheet.lastRow.number);
+
+            // Mengatur alignment teks "Total" di kolom "No" untuk rata kiri
+            worksheet.getCell('A' + worksheet.lastRow.number).alignment = {
+                vertical: 'middle',
+                horizontal: 'center',
+            };
+
+            // Mengatur alignment angka di sel lainnya untuk rata kanan
+            worksheet.getRow(worksheet.lastRow.number).eachCell((cell, colNumber) => {
+                if (colNumber > 1) { // Kolom lainnya selain "No"
+                    cell.alignment = {
+                        vertical: 'middle',
+                        horizontal: 'left',
+                    };
+                }
+            });
+
+            // Simpan workbook sebagai file Excel
+            workbook.xlsx.writeBuffer().then(function(data) {
+                const blob = new Blob([data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'report.xlsx';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
+        }
+
 
         function pieCharts(chartID, chartText, pieData) {
             let chartPie = document.getElementById(chartID);
