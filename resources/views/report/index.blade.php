@@ -209,6 +209,7 @@
                                 <tr>
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Code Production</th>
+                                    <th rowspan="2">Operator</th>
                                     <th rowspan="2">Code Pcs</th>
                                     <th rowspan="2">Code Box</th>
                                     <th rowspan="2">Duration</th>
@@ -360,6 +361,7 @@
                                     <tr>
                                         <td>${key + 1}</td>
                                         <td>${val['CodeProduction']}</td>
+                                        <td>${val['operator']}</td>
                                         <td>${val['codeProductpcs']}</td>                                      
                                         <td>${val['codeProductBox']}</td>                                      
                                         <td>${val['duration']}</td>                                      
@@ -643,6 +645,10 @@
                     width: 20
                 },
                 {
+                    key: 'operator',
+                    width: 20
+                },
+                {
                     key: 'codeProductpcs',
                     width: 20
                 },
@@ -869,6 +875,7 @@
             const tableData = data.map((row, index) => ({
                 no: index + 1,
                 CodeProduction: row.CodeProduction,
+                operator: row.operator,
                 codeProductpcs: row.codeProductpcs,
                 codeProductBox: row.codeProductBox,
                 duration: row.duration,
