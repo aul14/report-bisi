@@ -214,9 +214,9 @@
                                     <th rowspan="2">Code Box</th>
                                     <th rowspan="2">Duration</th>
                                     <th rowspan="2">Line Number</th>
-                                    <th colspan="17" style="background-color: orange;">PCS 1</th>
-                                    <th colspan="17" style="background-color: red;">PCS 2</th>
-                                    <th colspan="17" style="background-color: green;">BOX</th>
+                                    <th colspan="18" style="background-color: orange;">PCS 1</th>
+                                    <th colspan="18" style="background-color: red;">PCS 2</th>
+                                    <th colspan="18" style="background-color: green;">BOX</th>
                                 </tr>
                                 <tr>
                                     <th style="background-color: orange;">Number Total</th>
@@ -424,7 +424,7 @@
                         resultTable.append(`
                             <tfoot>
                                 <tr>
-                                    <th colspan="6" class="text-center">Total</th>
+                                    <th colspan="7" class="text-center">Total</th>
                                     <th>${pcs1NumTotal}</th>
                                     <th>${pcs1WeightTotal}</th>
                                     <th>${pcs1AvgTotal}</th>
@@ -833,7 +833,7 @@
                     width: 25
                 },
                 {
-                    key: 'box_weright_good',
+                    key: 'box_weight_good',
                     width: 25
                 },
                 {
@@ -841,7 +841,7 @@
                     width: 25
                 },
                 {
-                    key: 'box_percent_good',
+                    key: 'box_percecnt_good',
                     width: 25
                 },
                 {
@@ -924,7 +924,7 @@
                 box_number_good: row.box_number_good,
                 box_weight_good: row.box_weight_good,
                 box_average_good: row.box_average_good,
-                box_percent_good: row.box_percent_good,
+                box_percecnt_good: row.box_percecnt_good,
                 box_number_underweight: row.box_number_underweight,
                 box_weight_underweight: row.box_weight_underweight,
                 box_average_underweight: row.box_average_underweight,
@@ -934,7 +934,7 @@
             }));
 
             // Definisikan header untuk tabel
-            const tableHeader = ['No', 'Code Production', 'Code Pcs', 'Code Box', 'Duration', 'Line Number',
+            const tableHeader = ['No', 'Code Production', 'Operator', 'Code Pcs', 'Code Box', 'Duration', 'Line Number',
                 'PCS 1 - Number Total', 'PCS 1 - Weight Total', 'PCS 1 - AVG Total',
                 'PCS 1 - Number Over Weight', 'PCS 1 - Weight Over Weight', 'PCS 1 - AVG Over Weight',
                 'PCS 1 - Percent Over Weight', 'PCS 1 - Number Good', 'PCS 1 - Weight Good', 'PCS 1 - AVG Good',
@@ -1044,9 +1044,9 @@
                 box_percent_overweight: tableData.reduce((sum, row) => sum + parseFloat(row
                     .box_percent_overweight || 0), 0),
                 box_number_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_number_good || 0), 0),
-                box_weright_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_weight_good || 0), 0),
+                box_weight_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_weight_good || 0), 0),
                 box_average_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_average_good || 0), 0),
-                box_percent_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_percent_good || 0), 0),
+                box_percecnt_good: tableData.reduce((sum, row) => sum + parseFloat(row.box_percecnt_good || 0), 0),
                 box_number_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
                     .box_number_underweight || 0), 0),
                 box_weight_underweight: tableData.reduce((sum, row) => sum + parseFloat(row
