@@ -214,9 +214,9 @@
                                     <th rowspan="2">Code Box</th>
                                     <th rowspan="2">Duration</th>
                                     <th rowspan="2">Line Number</th>
-                                    <th colspan="18" style="background-color: orange;">PCS 1</th>
-                                    <th colspan="18" style="background-color: red;">PCS 2</th>
-                                    <th colspan="18" style="background-color: green;">BOX</th>
+                                    <th colspan="17" style="background-color: orange;">PCS 1</th>
+                                    <th colspan="17" style="background-color: red;">PCS 2</th>
+                                    <th colspan="17" style="background-color: green;">BOX</th>
                                 </tr>
                                 <tr>
                                     <th style="background-color: orange;">Number Total</th>
