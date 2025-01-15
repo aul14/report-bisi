@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-start">
             <img src="{{ asset('img/logo-bisi.png') }}" width="50" alt="Logo" class="img img-thumbnail">
 
-            <span class="text-white font-weight-bolder mt-3 ms-2">PT Bisi International Tbk</span>
+            <span class="text-white font-weight-bolder mt-3 ms-2">PT. BISI International, Tbk.</span>
 
         </div>
         <nav aria-label="breadcrumb">

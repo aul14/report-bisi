@@ -152,8 +152,8 @@
                 periods: ['day', 'week', 'month', 'year'],
                 // standalone: true,
                 callback: function(start, period) {
-
-                    var title = start.format('YYYY-MM-DD');
+                    // var title = start.format('YYYY-MM-DD');
+                    var title = start.format('DD-MM-YYYY');
                     $(this).val(title)
                 }
             });
@@ -165,8 +165,8 @@
                 periods: ['day', 'week', 'month', 'year'],
                 // standalone: true,
                 callback: function(start, period) {
-
-                    var title = start.format('YYYY-MM-DD');
+                    // var title = start.format('YYYY-MM-DD');
+                    var title = start.format('DD-MM-YYYY');
                     $(this).val(title)
                 }
             });

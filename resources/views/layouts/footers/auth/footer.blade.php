@@ -7,7 +7,7 @@
                         ©
                         <script>
                             document.write(new Date().getFullYear())
-                        </script>, PT BISI INTERNATIONAL Tbk
+                        </script>, PT. BISI International, Tbk.
                     </div>
                 </div>
 

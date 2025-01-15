@@ -1,6 +1,30 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 @section('content')
     @include('layouts.navbars.auth.topnav', ['title' => 'Report'])
+    <style>
+        /* Membekukan kolom pertama hingga ketujuh di bagian footer */
+        table.dataTable tfoot th {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            /* Menjaga agar tetap di atas elemen lain */
+            background-color: white;
+            color: #000;
+            /* Warna latar belakang untuk menghindari transparansi */
+            border-top: 1px solid #ddd;
+        }
+
+        /* Membuat kolom dari 2-7 tetap beku */
+        table.dataTable tfoot th:nth-child(-n+7) {
+            position: sticky;
+            background-color: white;
+            color: #000;
+            left: 0;
+            z-index: 2;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.fixedColumn.css') }}">
+
     <div class="row mt-1 px-1">
         <div class="card">
             <div class="card-body px-1">
@@ -69,6 +93,9 @@
                     </div>
                     <div class="col-md-12 mt-2">
                         <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div id="pc2-good" style="height: 450px; width: 100%;"></div>
+                            </div>
                             <div class="col-md-6 col-sm-12">
                                 <div id="pc3-pcs" style="height: 450px; width: 100%;"></div>
                             </div>
@@ -78,7 +105,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="table-report" style="overflow: auto;">
+                        <div class="table-report">
                         </div>
                     </div>
                 </div>
@@ -89,7 +116,7 @@
 @section('script')
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.fixedColumns.js') }}"></script>
     <script src="{{ asset('assets/export-excell/html2canvas.min.js') }}"></script>
     <script src="{{ asset('assets/export-excell/exceljs.min.js') }}"></script>
 
@@ -120,6 +147,41 @@
             });
 
         });
+
+        function loadDataTable() {
+            $('.my-table').DataTable({
+                processing: true,
+                serverSide: false,
+                pagingType: 'full_numbers',
+                scrollY: "50vh",
+                scrollCollapse: true,
+                scrollX: true,
+                oLanguage: {
+                    oPaginate: {
+                        sNext: '<span class="fas fa-angle-right pgn-1" style="color: #5e72e4"></span>',
+                        sPrevious: '<span class="fas fa-angle-left pgn-2" style="color: #5e72e4"></span>',
+                        sFirst: '<span class="fas fa-angle-double-left pgn-3" style="color: #5e72e4"></span>',
+                        sLast: '<span class="fas fa-angle-double-right pgn-4" style="color: #5e72e4"></span>',
+                    }
+                },
+                columnDefs: [{
+                    defaultContent: "-",
+                    targets: "_all"
+                }],
+                fixedColumns: {
+                    leftColumns: 7 // Membekukan kolom pertama hingga ketiga
+                },
+                footerCallback: function(row, data, start, end, display) {
+                    var api = this.api();
+                    $(api.table().footer()).find('th').css({
+                        position: 'sticky',
+                        bottom: 0,
+                        zIndex: 1030, // agar tetap di atas konten
+                        backgroundColor: 'white'
+                    });
+                }
+            });
+        }
 
         function searchReport(start, end) {
             $.ajax({
@@ -198,7 +260,8 @@
                         const uniquePcs = new Set();
                         const uniqueBox = new Set();
                         const pie3 = [],
-                            pie4 = [];
+                            pie4 = [],
+                            pie2 = [];
 
                         const resultTable = $(
                             `<table class="table my-table my-tablelog my-table-striped w-100"></table>`
@@ -210,13 +273,13 @@
                                     <th rowspan="2">No</th>
                                     <th rowspan="2">Code Production</th>
                                     <th rowspan="2">Operator</th>
-                                    <th rowspan="2">Code Pcs</th>
-                                    <th rowspan="2">Code Box</th>
+                                    <th rowspan="2">Product Pcs</th>
+                                    <th rowspan="2">Product Box</th>
                                     <th rowspan="2">Duration</th>
                                     <th rowspan="2">Line Number</th>
-                                    <th colspan="17" style="background-color: orange;">PCS 1</th>
-                                    <th colspan="17" style="background-color: red;">PCS 2</th>
-                                    <th colspan="17" style="background-color: green;">BOX</th>
+                                    <th colspan="17" style="background-color: orange;">Scale 1</th>
+                                    <th colspan="17" style="background-color: red;">Scale 2</th>
+                                    <th colspan="17" style="background-color: green;">Scale Box</th>
                                 </tr>
                                 <tr>
                                     <th style="background-color: orange;">Number Total</th>
@@ -366,57 +429,57 @@
                                         <td>${val['codeProductBox']}</td>                                      
                                         <td>${val['duration']}</td>                                      
                                         <td>${val['line_number']}</td>                                      
-                                        <td>${val['pcs1_number_total']}</td>                                      
-                                        <td>${val['pcs1_weight_total']}</td>                                      
-                                        <td>${val['pcs1_average_total']}</td>                                      
-                                        <td>${val['pcs1_number_overweight']}</td>                                      
-                                        <td>${val['pcs1_weight_overweight']}</td>                                      
-                                        <td>${val['pcs1_average_overweight']}</td>                                      
-                                        <td>${val['pcs1_percent_overweight']}</td>                                      
-                                        <td>${val['pcs1_number_good']}</td>                                      
-                                        <td>${val['pcs1_weright_good']}</td>                                      
-                                        <td>${val['pcs1_average_good']}</td>                                      
-                                        <td>${val['pcs1_percent_good']}</td>                                      
-                                        <td>${val['pcs1_number_underweight']}</td>                                      
-                                        <td>${val['pcs1_weight_underweight']}</td>                                      
-                                        <td>${val['pcs1_average_underweight']}</td>                                      
-                                        <td>${val['pcs1_percent_underweight']}</td>                                      
-                                        <td>${val['pcs1_number_error']}</td>                                      
-                                        <td>${val['pcs1_percent_error']}</td>                                      
-                                        <td>${val['pcs2_number_total']}</td>                                      
-                                        <td>${val['pcs2_weight_total']}</td>                                      
-                                        <td>${val['pcs2_average_total']}</td>                                      
-                                        <td>${val['pcs2_number_overweight']}</td>                                      
-                                        <td>${val['pcs2_weight_overweight']}</td>                                      
-                                        <td>${val['pcs2_average_overweight']}</td>                                      
-                                        <td>${val['pcs2_percent_overweight']}</td>                                      
-                                        <td>${val['pcs2_number_good']}</td>                                      
-                                        <td>${val['pcs2_weright_good']}</td>                                      
-                                        <td>${val['pcs2_average_good']}</td>                                      
-                                        <td>${val['pcs2_percent_good']}</td>                                      
-                                        <td>${val['pcs2_number_underweight']}</td>                                      
-                                        <td>${val['pcs2_weight_underweight']}</td>                                      
-                                        <td>${val['pcs2_average_underweight']}</td>                                      
-                                        <td>${val['pcs2_percent_underweight']}</td>                                      
-                                        <td>${val['pcs2_number_error']}</td>                                      
-                                        <td>${val['pcs2_percent_error']}</td>                                      
-                                        <td>${val['box_number_total']}</td>                                      
-                                        <td>${val['box_weight_total']}</td>                                      
-                                        <td>${val['box_average_total']}</td>                                      
-                                        <td>${val['box_number_overweight']}</td>                                      
-                                        <td>${val['box_weight_overweight']}</td>                                      
-                                        <td>${val['box_average_overweight']}</td>                                      
-                                        <td>${val['box_percent_overweight']}</td>                                      
-                                        <td>${val['box_number_good']}</td>                                      
-                                        <td>${val['box_weight_good']}</td>                                      
-                                        <td>${val['box_average_good']}</td>                                      
-                                        <td>${val['box_percecnt_good']}</td>                                      
-                                        <td>${val['box_number_underweight']}</td>                                      
-                                        <td>${val['box_weight_underweight']}</td>                                      
-                                        <td>${val['box_average_underweight']}</td>                                      
-                                        <td>${val['box_percent_underweight']}</td>                                      
-                                        <td>${val['box_number_error']}</td>                                      
-                                        <td>${val['box_percent_error']}</td>                                                                    
+                                        <td style="text-align: right;">${val['pcs1_number_total']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_weight_total']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_average_total']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_number_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_weight_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_average_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_percent_overweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_number_good']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_weright_good']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_average_good']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_percent_good']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_number_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_weight_underweight']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_average_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_percent_underweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_number_error']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs1_percent_error']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_number_total']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_weight_total']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_average_total']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_number_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_weight_overweight']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_average_overweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_percent_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_number_good']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_weright_good']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_average_good']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_percent_good']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_number_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_weight_underweight']} G</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_average_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_percent_underweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_number_error']}</td>                                      
+                                        <td style="text-align: right;">${val['pcs2_percent_error']} %</td>                                      
+                                        <td style="text-align: right;">${val['box_number_total']}</td>                                      
+                                        <td style="text-align: right;">${val['box_weight_total']} KG</td>                                      
+                                        <td style="text-align: right;">${val['box_average_total']}</td>                                      
+                                        <td style="text-align: right;">${val['box_number_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['box_weight_overweight']} KG</td>                                      
+                                        <td style="text-align: right;">${val['box_average_overweight']}</td>                                      
+                                        <td style="text-align: right;">${val['box_percent_overweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['box_number_good']}</td>                                      
+                                        <td style="text-align: right;">${val['box_weight_good']} KG</td>                                      
+                                        <td style="text-align: right;">${val['box_average_good']}</td>                                      
+                                        <td style="text-align: right;">${val['box_percecnt_good']} %</td>                                      
+                                        <td style="text-align: right;">${val['box_number_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['box_weight_underweight']} KG</td>                                      
+                                        <td style="text-align: right;">${val['box_average_underweight']}</td>                                      
+                                        <td style="text-align: right;">${val['box_percent_underweight']} %</td>                                      
+                                        <td style="text-align: right;">${val['box_number_error']}</td>                                      
+                                        <td style="text-align: right;">${val['box_percent_error']} %</td>                                                                    
                                     </tr>
                             `);
                         });
@@ -425,79 +488,89 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="7" class="text-center">Total</th>
-                                    <th>${pcs1NumTotal}</th>
-                                    <th>${pcs1WeightTotal}</th>
-                                    <th>${pcs1AvgTotal}</th>
-                                    <th>${pcs1NumOverWeight}</th>
-                                    <th>${pcs1WeightOverWeight}</th>
-                                    <th>${pcs1AvgOverWeight}</th>
-                                    <th>${pcs1PercentOverWeight}</th>
-                                    <th>${pcs1NumGood}</th>
-                                    <th>${pcs1WeightGood}</th>
-                                    <th>${pcs1AvgGood}</th>
-                                    <th>${pcs1PercentGood}</th>
-                                    <th>${pcs1NumUnderWeight}</th>
-                                    <th>${pcs1WeightUnderWeight}</th>
-                                    <th>${pcs1AvgUnderWeight}</th>
-                                    <th>${pcs1PercentUnderWeight}</th>
-                                    <th>${pcs1NumberError}</th>
-                                    <th>${pcs1PercentError}</th>
-                                    <th>${pcs2NumTotal}</th>
-                                    <th>${pcs2WeightTotal}</th>
-                                    <th>${pcs2AvgTotal}</th>
-                                    <th>${pcs2NumOverWeight}</th>
-                                    <th>${pcs2WeightOverWeight}</th>
-                                    <th>${pcs2AvgOverWeight}</th>
-                                    <th>${pcs2PercentOverWeight}</th>
-                                    <th>${pcs2NumGood}</th>
-                                    <th>${pcs2WeightGood}</th>
-                                    <th>${pcs2AvgGood}</th>
-                                    <th>${pcs2PercentGood}</th>
-                                    <th>${pcs2NumUnderWeight}</th>
-                                    <th>${pcs2WeightUnderWeight}</th>
-                                    <th>${pcs2AvgUnderWeight}</th>
-                                    <th>${pcs2PercentUnderWeight}</th>
-                                    <th>${pcs2NumberError}</th>
-                                    <th>${pcs2PercentError}</th>
-                                    <th>${boxNumTotal}</th>
-                                    <th>${boxWeightTotal}</th>
-                                    <th>${boxAvgTotal}</th>
-                                    <th>${boxNumOverWeight}</th>
-                                    <th>${boxWeightOverWeight}</th>
-                                    <th>${boxAvgOverWeight}</th>
-                                    <th>${boxPercentOverWeight}</th>
-                                    <th>${boxNumGood}</th>
-                                    <th>${boxWeightGood}</th>
-                                    <th>${boxAvgGood}</th>
-                                    <th>${boxPercentGood}</th>
-                                    <th>${boxNumUnderWeight}</th>
-                                    <th>${boxWeightUnderWeight}</th>
-                                    <th>${boxAvgUnderWeight}</th>
-                                    <th>${boxPercentUnderWeight}</th>
-                                    <th>${boxNumberError}</th>
-                                    <th>${boxPercentError}</th>
+                                    <th style="text-align: right;">${pcs1NumTotal}</th>
+                                    <th style="text-align: right;">${pcs1WeightTotal}</th>
+                                    <th style="text-align: right;">${pcs1AvgTotal}</th>
+                                    <th style="text-align: right;">${pcs1NumOverWeight}</th>
+                                    <th style="text-align: right;">${pcs1WeightOverWeight}</th>
+                                    <th style="text-align: right;">${pcs1AvgOverWeight}</th>
+                                    <th style="text-align: right;">${pcs1PercentOverWeight}</th>
+                                    <th style="text-align: right;">${pcs1NumGood}</th>
+                                    <th style="text-align: right;">${pcs1WeightGood}</th>
+                                    <th style="text-align: right;">${pcs1AvgGood}</th>
+                                    <th style="text-align: right;">${pcs1PercentGood}</th>
+                                    <th style="text-align: right;">${pcs1NumUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs1WeightUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs1AvgUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs1PercentUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs1NumberError}</th>
+                                    <th style="text-align: right;">${pcs1PercentError}</th>
+                                    <th style="text-align: right;">${pcs2NumTotal}</th>
+                                    <th style="text-align: right;">${pcs2WeightTotal}</th>
+                                    <th style="text-align: right;">${pcs2AvgTotal}</th>
+                                    <th style="text-align: right;">${pcs2NumOverWeight}</th>
+                                    <th style="text-align: right;">${pcs2WeightOverWeight}</th>
+                                    <th style="text-align: right;">${pcs2AvgOverWeight}</th>
+                                    <th style="text-align: right;">${pcs2PercentOverWeight}</th>
+                                    <th style="text-align: right;">${pcs2NumGood}</th>
+                                    <th style="text-align: right;">${pcs2WeightGood}</th>
+                                    <th style="text-align: right;">${pcs2AvgGood}</th>
+                                    <th style="text-align: right;">${pcs2PercentGood}</th>
+                                    <th style="text-align: right;">${pcs2NumUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs2WeightUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs2AvgUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs2PercentUnderWeight}</th>
+                                    <th style="text-align: right;">${pcs2NumberError}</th>
+                                    <th style="text-align: right;">${pcs2PercentError}</th>
+                                    <th style="text-align: right;">${boxNumTotal}</th>
+                                    <th style="text-align: right;">${boxWeightTotal}</th>
+                                    <th style="text-align: right;">${boxAvgTotal}</th>
+                                    <th style="text-align: right;">${boxNumOverWeight}</th>
+                                    <th style="text-align: right;">${boxWeightOverWeight}</th>
+                                    <th style="text-align: right;">${boxAvgOverWeight}</th>
+                                    <th style="text-align: right;">${boxPercentOverWeight}</th>
+                                    <th style="text-align: right;">${boxNumGood}</th>
+                                    <th style="text-align: right;">${boxWeightGood}</th>
+                                    <th style="text-align: right;">${boxAvgGood}</th>
+                                    <th style="text-align: right;">${boxPercentGood}</th>
+                                    <th style="text-align: right;">${boxNumUnderWeight}</th>
+                                    <th style="text-align: right;">${boxWeightUnderWeight}</th>
+                                    <th style="text-align: right;">${boxAvgUnderWeight}</th>
+                                    <th style="text-align: right;">${boxPercentUnderWeight}</th>
+                                    <th style="text-align: right;">${boxNumberError}</th>
+                                    <th style="text-align: right;">${boxPercentError}</th>
                                 </tr>
                             </tfoot>
                         `);
 
+                        pie2.push({
+                            value: pcs1PercentGood + pcs2PercentGood + boxPercentGood,
+                            name: 'Total Good'
+                        }, {
+                            value: pcs1PercentError + pcs2PercentError + boxPercentError,
+                            name: 'Total Not Good'
+                        });
+
                         pie3.push({
                             value: pcs1NumTotal + pcs2NumTotal,
-                            name: 'Total Number Pcs'
+                            name: 'Total Number Scale Pcs'
                         }, {
                             value: pcs1NumGood + pcs2NumGood,
-                            name: 'Good Number Pcs'
+                            name: 'Good Number Scale Pcs'
                         });
 
                         pie4.push({
                             value: boxNumTotal,
-                            name: 'Total Number Box'
+                            name: 'Total Number Scale Box'
                         }, {
                             value: boxNumGood,
-                            name: 'Good Number Box'
+                            name: 'Good Number Scale Box'
                         });
 
+                        pieCharts('pc2-good', 'Total Good & Not Good', pie2);
                         pieCharts('pc3-pcs', 'Total & Good Pcs', pie3);
                         pieCharts('pc4-box', 'Total & Good Box', pie4);
+
 
                         // Konversi total detik kembali ke format HH:MM:SS
                         const secondsToDuration = (seconds) => {
@@ -524,6 +597,8 @@
                         $('.btn-excell').on('click', function() {
                             exportReportToExcel(res);
                         });
+
+                        loadDataTable();
                     } else {
                         tableReport.empty();
                         $('.btn-excell').hide();
@@ -935,25 +1010,31 @@
 
             // Definisikan header untuk tabel
             const tableHeader = ['No', 'Code Production', 'Operator', 'Code Pcs', 'Code Box', 'Duration', 'Line Number',
-                'PCS 1 - Number Total', 'PCS 1 - Weight Total', 'PCS 1 - AVG Total',
-                'PCS 1 - Number Over Weight', 'PCS 1 - Weight Over Weight', 'PCS 1 - AVG Over Weight',
-                'PCS 1 - Percent Over Weight', 'PCS 1 - Number Good', 'PCS 1 - Weight Good', 'PCS 1 - AVG Good',
-                'PCS 1 - Percent Good',
-                'PCS 1 - Number Under Weight', 'PCS 1 - Weight Under Weight', 'PCS 1 - AVG Under Weight',
-                'PCS 1 - Percent Under Weight', 'PCS 1 - Number Error',
-                'PCS 1 - Percent Error', 'PCS 2 - Number Total', 'PCS 2 - Weight Total', 'PCS 2 - AVG Total',
-                'PCS 2 - Number Over Weight', 'PCS 2 - Weight Over Weight', 'PCS 2 - AVG Over Weight',
-                'PCS 2 - Percent Over Weight', 'PCS 2 - Number Good', 'PCS 2 - Weight Good', 'PCS 2 - AVG Good',
-                'PCS 2 - Percent Good',
-                'PCS 2 - Number Under Weight', 'PCS 2 - Weight Under Weight', 'PCS 2 - AVG Under Weight',
-                'PCS 2 - Percent Under Weight', 'PCS 2 - Number Error',
-                'PCS 2 - Percent Error', 'BOX - Number Total', 'BOX - Weight Total', 'BOX - AVG Total',
-                'BOX - Number Over Weight', 'BOX - Weight Over Weight', 'BOX - AVG Over Weight',
-                'BOX - Percent Over Weight', 'BOX - Number Good', 'BOX - Weight Good', 'BOX - AVG Good',
-                'BOX - Percent Good',
-                'BOX - Number Under Weight', 'BOX - Weight Under Weight', 'BOX - AVG Under Weight',
-                'BOX - Percent Under Weight', 'BOX - Number Error',
-                'BOX - Percent Error'
+                'Scale 1 - Number Total', 'Scale 1 - Weight Total', 'Scale 1 - AVG Total',
+                'Scale 1 - Number Over Weight', 'Scale 1 - Weight Over Weight', 'Scale 1 - AVG Over Weight',
+                'Scale 1 - Percent Over Weight', 'Scale 1 - Number Good', 'Scale 1 - Weight Good',
+                'Scale 1 - AVG Good',
+                'Scale 1 - Percent Good',
+                'Scale 1 - Number Under Weight', 'Scale 1 - Weight Under Weight', 'Scale 1 - AVG Under Weight',
+                'Scale 1 - Percent Under Weight', 'Scale 1 - Number Error',
+                'Scale 1 - Percent Error', 'Scale 2 - Number Total', 'Scale 2 - Weight Total',
+                'Scale 2 - AVG Total',
+                'Scale 2 - Number Over Weight', 'Scale 2 - Weight Over Weight', 'Scale 2 - AVG Over Weight',
+                'Scale 2 - Percent Over Weight', 'Scale 2 - Number Good', 'Scale 2 - Weight Good',
+                'Scale 2 - AVG Good',
+                'Scale 2 - Percent Good',
+                'Scale 2 - Number Under Weight', 'Scale 2 - Weight Under Weight', 'Scale 2 - AVG Under Weight',
+                'Scale 2 - Percent Under Weight', 'Scale 2 - Number Error',
+                'Scale 2 - Percent Error', 'Scale Box - Number Total', 'Scale Box - Weight Total',
+                'Scale Box - AVG Total',
+                'Scale Box - Number Over Weight', 'Scale Box - Weight Over Weight', 'Scale Box - AVG Over Weight',
+                'Scale Box - Percent Over Weight', 'Scale Box - Number Good', 'Scale Box - Weight Good',
+                'Scale Box - AVG Good',
+                'Scale Box - Percent Good',
+                'Scale Box - Number Under Weight', 'Scale Box - Weight Under Weight',
+                'Scale Box - AVG Under Weight',
+                'Scale Box - Percent Under Weight', 'Scale Box - Number Error',
+                'Scale Box - Percent Error'
             ];
 
             // Tambahkan header ke baris 20

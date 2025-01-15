@@ -10,7 +10,7 @@
                             <div class="card card-plain">
                                 <div class="card-header pb-0 text-start">
                                     <h4 class="font-weight-bolder">Sign In</h4>
-                                    <h6 class="mb-0">PT BISI INTERNATIONAL Tbk</h6>
+                                    <h6 class="mb-0">PT. BISI International, Tbk.</h6>
                                     <p class="mb-0">Report & Monitoring</p>
 
                                 </div>
@@ -74,9 +74,9 @@
                         </div>
                         <div
                             class="col-7 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                            <div class="position-relative h-100 d-flex flex-column justify-content-center overflow-hidden"
-                               >
-                                <h4 class="font-weight-bolder position-relative" style="color: #07a88f">PT BISI INTERNATIONAL Tbk</h4>
+                            <div class="position-relative h-100 d-flex flex-column justify-content-center overflow-hidden">
+                                <h4 class="font-weight-bolder position-relative" style="color: #07a88f">PT BISI
+                                    INTERNATIONAL Tbk</h4>
                                 <h6 class="font-weight-bolder position-relative"></h6>
                             </div>
                         </div>

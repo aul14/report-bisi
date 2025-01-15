@@ -16,8 +16,8 @@ class ReportController extends Controller
 
     public function ajax_get_report(Request $request)
     {
-        $dateStart = $request->date_start;
-        $dateEnd = $request->date_end;
+        $dateStart = date('Y-m-d', strtotime($request->date_start));
+        $dateEnd = date('Y-m-d', strtotime($request->date_end));
 
         if ($dateStart && $dateEnd) {
             $data = DB::table('batchproductioncode')
