@@ -487,7 +487,13 @@
                         resultTable.append(`
                             <tfoot>
                                 <tr>
-                                    <th colspan="7" class="text-center">Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th style="text-align: right;">${pcs1NumTotal}</th>
                                     <th style="text-align: right;">${pcs1WeightTotal}</th>
                                     <th style="text-align: right;">${pcs1AvgTotal}</th>

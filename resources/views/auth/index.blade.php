@@ -75,8 +75,9 @@
                         <div
                             class="col-7 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
                             <div class="position-relative h-100 d-flex flex-column justify-content-center overflow-hidden">
-                                <h4 class="font-weight-bolder position-relative" style="color: #07a88f">PT BISI
-                                    INTERNATIONAL Tbk</h4>
+                                <h4 class="font-weight-bolder position-relative" style="color: #07a88f">
+                                    PT. BISI International, Tbk.
+                                </h4>
                                 <h6 class="font-weight-bolder position-relative"></h6>
                             </div>
                         </div>
