@@ -133,7 +133,7 @@
                                     <td>${val['goodWeight']}</td>  
                                     <td>${val['overNumber']}</td>  
                                     <td>${val['overWeight']}</td>  
-                                    <td>${val['underWeight']}</td>  
+                                    <td>${val['undeWeight']}</td>  
                                     <td>${val['errorNumber']}</td>  
                                     <td>${val['Indexs']}</td>  
                                     <td>${val['createdAt']}</td>  
@@ -215,7 +215,7 @@
                     width: 25
                 },
                 {
-                    key: 'underWeight',
+                    key: 'undeWeight',
                     width: 25
                 },
                 {
@@ -247,7 +247,7 @@
                 goodWeight: row.goodWeight,
                 overNumber: row.overNumber,
                 overWeight: row.overWeight,
-                underWeight: row.underWeight,
+                undeWeight: row.undeWeight,
                 errorNumber: row.errorNumber,
                 Indexs: row.Indexs,
                 createdAt: row.createdAt,
