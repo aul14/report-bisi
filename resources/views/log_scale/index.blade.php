@@ -62,6 +62,18 @@
                 }
             });
 
+            $(".btn-search").click(function(e) {
+                e.preventDefault();
+                let date_start = $(".form-search input[name=date_start]").val();
+                let date_end = $(".form-search input[name=date_end]").val();
+                let scale_name = $(".form-search input[name=scale_name]").val();
+                let line_number = $(".form-search input[name=line_number]").val();
+
+
+                searchReport(date_start, date_end, scale_name, line_number);
+            });
+
+
         });
 
         function searchReport(dateStart = null, dateEnd = null, scaleName = null, lineNumber = null) {
