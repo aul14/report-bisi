@@ -122,6 +122,19 @@
                         const tableBody = resultTable.find('tbody');
 
                         $.each(res.data, function(key, val) {
+                            const options = {
+                                timeZone: 'Asia/Jakarta',
+                                hour12: false,
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            };
+                            const createdAt = new Date(val['createdAt'])
+                                .toLocaleString('en-US', options);
+
                             tableBody.append(`
                                 <tr>
                                     <td>${key+1}</td>  
@@ -136,7 +149,7 @@
                                     <td>${val['undeWeight']}</td>  
                                     <td>${val['errorNumber']}</td>  
                                     <td>${val['Indexs']}</td>  
-                                    <td>${val['createdAt']}</td>  
+                                    <td>${createdAt}</td>  
                                     <td>${val['Status']}</td>  
                                 </tr>
                             `);
