@@ -14,8 +14,8 @@ class LogWeightController extends Controller
 
     public  function ajax_log_weight(Request $request)
     {
-        $date_start = $request->date_start ? $request->date_start : "";
-        $date_end = $request->date_end ? $request->date_end : "";
+        $date_start = $request->date_start ? date('Y-m-d', strtotime($request->date_start)) : "";
+        $date_end = $request->date_end ? date('Y-m-d', strtotime($request->date_end)) : "";
         $scale_name = $request->scale_name;
         $line_number = $request->line_number;
 
