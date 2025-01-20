@@ -21,7 +21,7 @@ class LogScaleDataController extends Controller
 
         $data = DB::table('logscaledata')
             ->when($scale_name, function ($query, $scale_name) {
-                return $query->where('scaleName', $scale_name);
+                return $query->where('scaleName', 'like', "%{$scale_name}%");
             })
             ->when($line_number, function ($query, $line_number) {
                 return $query->where('linenumber', $line_number);

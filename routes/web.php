@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::post('/batch_production/product_box', [BatchProductionController::class, 'getProductBox'])->name('batch_production.get.product_box');
     Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
     Route::get('/log_weight', [LogWeightController::class, 'index'])->name('log_weight.index');
+    Route::post('/log_weight/data', [LogWeightController::class, 'ajax_log_weight'])->name('log_weight.data');
     Route::get('/log_scale', [LogScaleDataController::class, 'index'])->name('log_scale.index');
     Route::post('/log_scale/data', [LogScaleDataController::class, 'ajax_log_scale'])->name('log_scale.data');
 });
