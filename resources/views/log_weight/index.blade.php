@@ -21,14 +21,23 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="scale_name" name="scale_name"
-                                    placeholder="Scale Name">
+                                <select name="scale_name" id="scale_name" class="form-select">
+                                    <option value=""></option>
+                                    <option value="scale1">Scale 1</option>
+                                    <option value="scale2">Scale 2</option>
+                                    <option value="scaleBox">Scale Box</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <input type="nimber" class="form-control" id="line_number" name="line_number"
-                                    placeholder="Line Number">
+                                <select name="line_number" id="line_number" class="form-select">
+                                    <option value=""></option>
+                                    <option value="1">Line 1</option>
+                                    <option value="2">Line 2</option>
+                                    <option value="3">Line 3</option>
+                                    <option value="4">Line 4</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -68,8 +77,8 @@
                 e.preventDefault();
                 let date_start = $(".form-search input[name=date_start]").val();
                 let date_end = $(".form-search input[name=date_end]").val();
-                let scale_name = $(".form-search input[name=scale_name]").val();
-                let line_number = $(".form-search input[name=line_number]").val();
+                let scale_name = $(".form-search select[name=scale_name]").val();
+                let line_number = $(".form-search select[name=line_number]").val();
 
                 searchReport(date_start, date_end, scale_name, line_number);
             });
