@@ -236,7 +236,7 @@
                 },
             ];
             // Data diambil dari res[] (sesuaikan dengan data Anda)
-            const data = res[0]; // Sesuaikan ini dengan data yang dihasilkan dari jQuery
+            const data = res.data; // Sesuaikan ini dengan data yang dihasilkan dari jQuery
             const tableData = data.map((row, index) => ({
                 no: index + 1,
                 linenumber: row.linenumber,
