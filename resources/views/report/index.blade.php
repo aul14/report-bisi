@@ -573,7 +573,7 @@
 
                         pieCharts('pc2-good', 'Total All Good & Not Good', pie2);
                         pieCharts('pc3-pcs', 'Total Good & Not Good Pcs', pie3);
-                        pieCharts('pc4-box', 'Tota Good & Not Good Box', pie4);
+                        pieCharts('pc4-box', 'Total Good & Not Good Box', pie4);
 
 
                         // Konversi total detik kembali ke format HH:MM:SS
