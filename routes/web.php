@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogScaleDataController;
+use App\Http\Controllers\LogWeightController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ProductBoxController;
 use App\Http\Controllers\ProductPcsController;
@@ -48,4 +50,7 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::post('/batch_production/product_pcs', [BatchProductionController::class, 'getProductPcs'])->name('batch_production.get.product_pcs');
     Route::post('/batch_production/product_box', [BatchProductionController::class, 'getProductBox'])->name('batch_production.get.product_box');
     Route::post('/ajax_get_report', [ReportController::class, 'ajax_get_report'])->name('ajax_get_report');
+    Route::get('/log_weight', [LogWeightController::class, 'index'])->name('log_weight.index');
+    Route::get('/log_scale', [LogScaleDataController::class, 'index'])->name('log_scale.index');
+    Route::post('/log_scale/data', [LogScaleDataController::class, 'ajax_log_scale'])->name('log_scale.data');
 });

@@ -37,6 +37,12 @@
                     <li><a class="dropdown-item" href="{{ route('batch_production.get') }}">
                             <i class="fa fa-gear"></i> Batch Production</a>
                     </li>
+                    <li><a class="dropdown-item" href="{{ route('log_weight.index') }}">
+                            <i class="fa fa-gear"></i> Log Weight</a>
+                    </li>
+                    <li><a class="dropdown-item" href="{{ route('log_scale.index') }}">
+                            <i class="fa fa-gear"></i> Log Scale</a>
+                    </li>
 
                     <li>
                         <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
