@@ -36,6 +36,8 @@
                         <div class="col-md-12 my-2">
                             <a href="{{ route('log_scale.index') }}" class="btn btn-md btn-outline-warning">Refresh</a>
                             <a href="javascript:void(0)" class="btn btn-md btn-outline-primary btn-search">Search</a>
+                            <a href="javascript:void(0)" class="btn btn-md btn-outline-success btn-excell"
+                                style="display: none">Excell</a>
                         </div>
                     </div>
                 </form>
@@ -131,7 +133,7 @@
                                     <td>${val['goodWeight']}</td>  
                                     <td>${val['overNumber']}</td>  
                                     <td>${val['overWeight']}</td>  
-                                    <td>${val['undeWeight']}</td>  
+                                    <td>${val['underWeight']}</td>  
                                     <td>${val['errorNumber']}</td>  
                                     <td>${val['Indexs']}</td>  
                                     <td>${val['createdAt']}</td>  
@@ -141,12 +143,152 @@
                         });
 
                         tableScale.empty().append(resultTable);
+                        $('.btn-excell').show();
+
+                        // Event listener untuk ekspor Excel
+                        $('.btn-excell').on('click', function() {
+                            exportReportToExcel(res);
+                        });
 
                         loadDataTable();
                     } else {
                         tableScale.empty();
+                        $('.btn-excell').hide();
                     }
                 }
+            });
+        }
+
+        async function exportReportToExcel(res) {
+            // Buat workbook dan worksheet
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Log Scale');
+
+
+            // Tambahkan tabel kolom di bawah gambar
+            worksheet.mergeCells('A1:N1');
+            worksheet.getCell('A1').value = 'Log Scale';
+            worksheet.getCell('A1').font = {
+                size: 14,
+                bold: true
+            };
+            worksheet.getCell('A1').alignment = {
+                vertical: 'middle',
+                horizontal: 'center'
+            };
+
+            // Definisikan kolom tabel dimulai dari baris setelah gambar
+            worksheet.columns = [{
+                    key: 'no',
+                    width: 5
+                },
+                {
+                    key: 'linenumber',
+                    width: 25
+                },
+                {
+                    key: 'scaleName',
+                    width: 25
+                },
+                {
+                    key: 'totalNumber',
+                    width: 25
+                },
+                {
+                    key: 'totalweight',
+                    width: 25
+                },
+                {
+                    key: 'goodNumber',
+                    width: 25
+                },
+                {
+                    key: 'goodWeight',
+                    width: 25
+                },
+                {
+                    key: 'overNumber',
+                    width: 25
+                },
+                {
+                    key: 'overWeight',
+                    width: 25
+                },
+                {
+                    key: 'underWeight',
+                    width: 25
+                },
+                {
+                    key: 'errorNumber',
+                    width: 25
+                },
+                {
+                    key: 'Indexs',
+                    width: 25
+                },
+                {
+                    key: 'createdAt',
+                    width: 25
+                },
+                {
+                    key: 'Status',
+                    width: 25
+                },
+            ];
+            // Data diambil dari res[] (sesuaikan dengan data Anda)
+            const data = res[0]; // Sesuaikan ini dengan data yang dihasilkan dari jQuery
+            const tableData = data.map((row, index) => ({
+                no: index + 1,
+                linenumber: row.linenumber,
+                scaleName: row.scaleName,
+                totalNumber: row.totalNumber,
+                totalweight: row.totalweight,
+                goodNumber: row.goodNumber,
+                goodWeight: row.goodWeight,
+                overNumber: row.overNumber,
+                overWeight: row.overWeight,
+                underWeight: row.underWeight,
+                errorNumber: row.errorNumber,
+                Indexs: row.Indexs,
+                createdAt: row.createdAt,
+                Status: row.Status,
+            }));
+
+            // Definisikan header untuk tabel
+            const tableHeader = ['No', 'Line Number', 'Scale Name', 'Total Number', 'Total Weight', 'Good Number',
+                'Good Weight', 'Over Number', 'Over Weight', 'Under Weight', 'Error Number', 'Index', 'Created At',
+                'Status'
+            ];
+
+            // Tambahkan header ke baris 20
+            worksheet.addRow(tableHeader);
+
+            worksheet.getRow(20).eachCell((cell) => {
+                cell.font = {
+                    bold: true
+                }; // Set font bold untuk header
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center'
+                };
+            });
+
+            // Tambahkan data ke worksheet dimulai dari baris 21
+            tableData.forEach((row) => {
+                worksheet.addRow(row);
+            });
+
+            // Simpan workbook sebagai file Excel
+            workbook.xlsx.writeBuffer().then(function(data) {
+                const blob = new Blob([data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'log_scale.xlsx';
+                a.click();
+                window.URL.revokeObjectURL(url);
             });
         }
 
