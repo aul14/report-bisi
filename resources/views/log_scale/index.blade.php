@@ -113,6 +113,8 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                            </tbody>
                         `);
 
                         const tableBody = resultTable.find('tbody');
