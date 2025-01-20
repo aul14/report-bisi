@@ -547,7 +547,7 @@
                         `);
 
                         pie2.push({
-                            value: pcs1NumTotal + pcs2NumTotal + boxNumTotal,
+                            value: pcs1NumGood + pcs2NumGood + boxNumGood,
                             name: 'Total Good'
                         }, {
                             value: pcs1NumTotal + pcs2NumTotal + boxNumTotal - (pcs1NumGood +
@@ -556,7 +556,7 @@
                         });
 
                         pie3.push({
-                            value: pcs1NumTotal + pcs2NumTotal,
+                            value: pcs1NumGood + pcs2NumGood,
                             name: 'Total Good Pcs'
                         }, {
                             value: pcs1NumTotal + pcs2NumTotal - (pcs1NumGood + pcs2NumGood),
@@ -564,7 +564,7 @@
                         });
 
                         pie4.push({
-                            value: boxNumTotal,
+                            value: boxNumGood,
                             name: 'Total Good Box'
                         }, {
                             value: boxNumTotal - boxNumGood,
@@ -729,10 +729,6 @@
                 },
                 {
                     key: 'codeProductpcs',
-                    width: 20
-                },
-                {
-                    key: 'codeProductBox',
                     width: 20
                 },
                 {
@@ -956,7 +952,6 @@
                 CodeProduction: row.CodeProduction,
                 operator: row.operator,
                 codeProductpcs: row.codeProductpcs,
-                codeProductBox: row.codeProductBox,
                 duration: row.duration,
                 line_number: row.line_number,
                 pcs1_number_total: row.pcs1_number_total,
@@ -1013,7 +1008,7 @@
             }));
 
             // Definisikan header untuk tabel
-            const tableHeader = ['No', 'Code Production', 'Operator', 'Code Pcs', 'Code Box', 'Duration', 'Line Number',
+            const tableHeader = ['No', 'Code Production', 'Operator', 'Product', 'Duration', 'Line Number',
                 'Scale 1 - Number Total', 'Scale 1 - Weight Total', 'Scale 1 - AVG Total',
                 'Scale 1 - Number Over Weight', 'Scale 1 - Weight Over Weight', 'Scale 1 - AVG Over Weight',
                 'Scale 1 - Percent Over Weight', 'Scale 1 - Number Good', 'Scale 1 - Weight Good',
