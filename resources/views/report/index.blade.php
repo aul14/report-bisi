@@ -427,57 +427,57 @@
                                         <td>${val['codeProductBox']}</td>                                      
                                         <td>${val['duration']}</td>                                      
                                         <td>${val['line_number']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_number_total']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_weight_total']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_average_total']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_number_overweight']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_weight_overweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_average_overweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_percent_overweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_number_good']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_weright_good']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_average_good']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_percent_good']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_number_underweight']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_weight_underweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_average_underweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_percent_underweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_number_error']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs1_percent_error']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_number_total']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_weight_total']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_average_total']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_number_overweight']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_weight_overweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_average_overweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_percent_overweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_number_good']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_weright_good']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_average_good']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_percent_good']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_number_underweight']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_weight_underweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_average_underweight']} G</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_percent_underweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_number_error']}</td>                                      
-                                        <td style="text-align: right;">${val['pcs2_percent_error']} %</td>                                      
-                                        <td style="text-align: right;">${val['box_number_total']}</td>                                      
-                                        <td style="text-align: right;">${val['box_weight_total']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_average_total']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_number_overweight']}</td>                                      
-                                        <td style="text-align: right;">${val['box_weight_overweight']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_average_overweight']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_percent_overweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['box_number_good']}</td>                                      
-                                        <td style="text-align: right;">${val['box_weight_good']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_average_good']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_percecnt_good']} %</td>                                      
-                                        <td style="text-align: right;">${val['box_number_underweight']}</td>                                      
-                                        <td style="text-align: right;">${val['box_weight_underweight']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_average_underweight']} KG</td>                                      
-                                        <td style="text-align: right;">${val['box_percent_underweight']} %</td>                                      
-                                        <td style="text-align: right;">${val['box_number_error']}</td>                                      
-                                        <td style="text-align: right;">${val['box_percent_error']} %</td>                                                                    
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_number_total']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_weight_total']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_average_total']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_number_overweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_weight_overweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_average_overweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_percent_overweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_number_good']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_weright_good']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_average_good']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_percent_good']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_number_underweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_weight_underweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_average_underweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_percent_underweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_number_error']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs1_percent_error']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_number_total']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_weight_total']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_average_total']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_number_overweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_weight_overweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_average_overweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_percent_overweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_number_good']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_weright_good']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_average_good']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_percent_good']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_number_underweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_weight_underweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_average_underweight']))} G</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_percent_underweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_number_error']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['pcs2_percent_error']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_number_total']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_weight_total']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_average_total']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_number_overweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_weight_overweight']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_average_overweight']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_percent_overweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_number_good']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_weight_good']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_average_good']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_percecnt_good']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_number_underweight']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_weight_underweight']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_average_underweight']))} KG</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_percent_underweight']))} %</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_number_error']))}</td>                                      
+                                        <td style="text-align: right;">${formatRibuan(parseFloat(val['box_percent_error']))} %</td>                                                                    
                                     </tr>
                             `);
                         });
@@ -491,57 +491,57 @@
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
-                                    <th style="text-align: right;">${pcs1NumTotal.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs1WeightTotal.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1AvgTotal.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1NumOverWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs1WeightOverWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1AvgOverWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1PercentOverWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs1NumGood.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs1WeightGood.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1AvgGood.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1PercentGood.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs1NumUnderWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs1WeightUnderWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1AvgUnderWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs1PercentUnderWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs1NumberError.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs1PercentError.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs2NumTotal.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs2WeightTotal.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2AvgTotal.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2NumOverWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs2WeightOverWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2AvgOverWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2PercentOverWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs2NumGood.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs2WeightGood.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2AvgGood.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2PercentGood.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs2NumUnderWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs2WeightUnderWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2AvgUnderWeight.toFixed(2)} G</th>
-                                    <th style="text-align: right;">${pcs2PercentUnderWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${pcs2NumberError.toFixed(2)}</th>
-                                    <th style="text-align: right;">${pcs2PercentError.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${boxNumTotal.toFixed(2)}</th>
-                                    <th style="text-align: right;">${boxWeightTotal.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxAvgTotal.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxNumOverWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${boxWeightOverWeight.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxAvgOverWeight.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxPercentOverWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${boxNumGood.toFixed(2)}</th>
-                                    <th style="text-align: right;">${boxWeightGood.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxAvgGood.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxPercentGood.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${boxNumUnderWeight.toFixed(2)}</th>
-                                    <th style="text-align: right;">${boxWeightUnderWeight.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxAvgUnderWeight.toFixed(2)} KG</th>
-                                    <th style="text-align: right;">${boxPercentUnderWeight.toFixed(2)} %</th>
-                                    <th style="text-align: right;">${boxNumberError.toFixed(2)}</th>
-                                    <th style="text-align: right;">${boxPercentError.toFixed(2)} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1NumTotal))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1WeightTotal))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1AvgTotal))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1NumOverWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1WeightOverWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1AvgOverWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1PercentOverWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1NumGood))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1WeightGood))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1AvgGood))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1PercentGood))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1NumUnderWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1WeightUnderWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1AvgUnderWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1PercentUnderWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1NumberError))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs1PercentError))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2NumTotal))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2WeightTotal))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2AvgTotal))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2NumOverWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2WeightOverWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2AvgOverWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2PercentOverWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2NumGood))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2WeightGood))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2AvgGood))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2PercentGood))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2NumUnderWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2WeightUnderWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2AvgUnderWeight))} G</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2PercentUnderWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2NumberError))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(pcs2PercentError))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxNumTotal))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxWeightTotal))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxAvgTotal))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxNumOverWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxWeightOverWeight))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxAvgOverWeight))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxPercentOverWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxNumGood))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxWeightGood))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxAvgGood))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxPercentGood))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxNumUnderWeight))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxWeightUnderWeight))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxAvgUnderWeight))} KG</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxPercentUnderWeight))} %</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxNumberError))}</th>
+                                    <th style="text-align: right;">${formatRibuan(parseFloat(boxPercentError))} %</th>
                                 </tr>
                             </tfoot>
                         `);
@@ -622,6 +622,13 @@
                     $('.ajax-loader').css("visibility", "hidden");
                 }
             });
+        }
+
+        function formatRibuan(angka) {
+            return angka
+                .toFixed(2) // Membulatkan angka ke 2 desimal
+                .replace('.', ',') // Mengubah titik menjadi koma untuk desimal
+                .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Menambahkan titik sebagai pemisah ribuan
         }
 
         async function exportReportToExcel(res) {
